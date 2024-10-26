@@ -2,6 +2,7 @@ package chess.pieces;
 
 import chess.*;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 public class Bishop extends ChessPiece {
@@ -10,7 +11,8 @@ public class Bishop extends ChessPiece {
         super(color, PieceType.BISHOP);
     }
 
-    public HashSet<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+    @Override
+    public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         HashSet<ChessMove> moves = new HashSet<>();
         moves.addAll(moveInDirection(board, myPosition, VerticalDirection.UP, HorizontalDirection.RIGHT));
         moves.addAll(moveInDirection(board, myPosition, VerticalDirection.UP, HorizontalDirection.LEFT));
