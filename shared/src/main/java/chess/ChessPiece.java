@@ -62,7 +62,7 @@ public class ChessPiece {
             case ROOK:
                 return new Rook(color).pieceMoves(board, myPosition);
             case QUEEN:
-                break;
+                return new Queen(color).pieceMoves(board, myPosition);
             case KNIGHT:
                 break;
             case KING:
