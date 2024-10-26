@@ -63,35 +63,24 @@ public class Pawn extends ChessPiece {
 
     private HashSet<ChessMove> captures(ChessBoard board, ChessPosition myPosition){
         HashSet<ChessMove> moves = new HashSet<>();
+        ChessPosition inspect;
         if (this.color == ChessGame.TeamColor.WHITE) {
-            ChessPosition inspect = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
-            for (int i = 0; i < 2; i++) {
-                if (i == 0) {
-                    inspect = new ChessPosition(inspect.getRow(), myPosition.getColumn() - 1);
-                } else {
-                    inspect = new ChessPosition(inspect.getRow(), myPosition.getColumn() + 1);
-                }
-                if (board.isOnBoard(inspect)) {
-                    ChessPiece capture = board.getPiece(inspect);
-                    if (capture != null && capture.getTeamColor() != this.color) {
-                        moves.addAll(checkPromotes(myPosition, inspect));
-                    }
-                }
-            }
+            inspect = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
         }
         else{
-            ChessPosition inspect = new ChessPosition(myPosition.getRow()-1, myPosition.getColumn());
-            for (int i = 0; i < 2; i++) {
-                if (i == 0) {
-                    inspect = new ChessPosition(inspect.getRow(), myPosition.getColumn()-1);
-                } else {
-                    inspect = new ChessPosition(inspect.getRow(), myPosition.getColumn()+1);
-                }
-                if (board.isOnBoard(inspect)) {
-                    ChessPiece capture = board.getPiece(inspect);
-                    if (capture != null && capture.getTeamColor() != this.color) {
-                        moves.addAll(checkPromotes(myPosition, inspect));
-                    }
+            inspect = new ChessPosition(myPosition.getRow()-1, myPosition.getColumn());
+        }
+        for (int i = 0; i < 2; i++) {
+            if (i == 0) {
+                inspect = new ChessPosition(inspect.getRow(), myPosition.getColumn()-1);
+            }
+            else {
+                inspect = new ChessPosition(inspect.getRow(), myPosition.getColumn()+1);
+            }
+            if (board.isOnBoard(inspect)) {
+                ChessPiece capture = board.getPiece(inspect);
+                if (capture != null && capture.getTeamColor() != this.color) {
+                    moves.addAll(checkPromotes(myPosition, inspect));
                 }
             }
         }
@@ -100,27 +89,21 @@ public class Pawn extends ChessPiece {
 
     private HashSet<ChessMove> checkPromotes(ChessPosition myPosition, ChessPosition toMove){
         HashSet<ChessMove> promotions = new HashSet<>();
+        int comp;
         if (this.color == ChessGame.TeamColor.WHITE) {
-            if (toMove.getRow() == 8) {
-                promotions.add(new ChessMove(myPosition, toMove, PieceType.QUEEN));
-                promotions.add(new ChessMove(myPosition, toMove, PieceType.BISHOP));
-                promotions.add(new ChessMove(myPosition, toMove, PieceType.KNIGHT));
-                promotions.add(new ChessMove(myPosition, toMove, PieceType.ROOK));
-            }
-            else{
-                promotions.add(new ChessMove(myPosition, toMove, null));
-            }
+            comp = 8;
         }
         else{
-            if (toMove.getRow() == 1) {
-                promotions.add(new ChessMove(myPosition, toMove, PieceType.QUEEN));
-                promotions.add(new ChessMove(myPosition, toMove, PieceType.BISHOP));
-                promotions.add(new ChessMove(myPosition, toMove, PieceType.KNIGHT));
-                promotions.add(new ChessMove(myPosition, toMove, PieceType.ROOK));
-            }
-            else{
-                promotions.add(new ChessMove(myPosition, toMove, null));
-            }
+            comp = 1;
+        }
+        if (toMove.getRow() == comp) {
+            promotions.add(new ChessMove(myPosition, toMove, PieceType.QUEEN));
+            promotions.add(new ChessMove(myPosition, toMove, PieceType.BISHOP));
+            promotions.add(new ChessMove(myPosition, toMove, PieceType.KNIGHT));
+            promotions.add(new ChessMove(myPosition, toMove, PieceType.ROOK));
+        }
+        else{
+            promotions.add(new ChessMove(myPosition, toMove, null));
         }
         return promotions;
     }
