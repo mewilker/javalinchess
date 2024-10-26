@@ -49,22 +49,13 @@ public class Pawn extends ChessPiece {
         if (color == ChessGame.TeamColor.WHITE) {
             ChessPosition inspect = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
             if (board.getPiece(inspect) == null) {
-                if (inspect.getRow() == 8) {
-                    moves.addAll(getPromotes(myPosition, inspect));
-                } else {
-                    moves.add(new ChessMove(myPosition, inspect, null));
-                }
+                moves.addAll(checkPromotes(myPosition, inspect));
             }
         }
         else{
             ChessPosition inspect = new ChessPosition(myPosition.getRow()-1, myPosition.getColumn());
             if(board.getPiece(inspect) == null){
-                if (inspect.getRow() == 1){
-                    moves.addAll(getPromotes(myPosition, inspect));
-                }
-                else{
-                    moves.add(new ChessMove(myPosition, inspect, null));
-                }
+                moves.addAll(checkPromotes(myPosition, inspect));
             }
         }
         return moves;
@@ -83,11 +74,7 @@ public class Pawn extends ChessPiece {
                 if (board.isOnBoard(inspect)) {
                     ChessPiece capture = board.getPiece(inspect);
                     if (capture != null && capture.getTeamColor() != this.color) {
-                        if (inspect.getRow() == 8) {
-                            moves.addAll(getPromotes(myPosition, inspect));
-                        } else {
-                            moves.add(new ChessMove(myPosition, inspect, null));
-                        }
+                        moves.addAll(checkPromotes(myPosition, inspect));
                     }
                 }
             }
@@ -103,11 +90,7 @@ public class Pawn extends ChessPiece {
                 if (board.isOnBoard(inspect)) {
                     ChessPiece capture = board.getPiece(inspect);
                     if (capture != null && capture.getTeamColor() != this.color) {
-                        if (inspect.getRow() == 1) {
-                            moves.addAll(getPromotes(myPosition, inspect));
-                        } else {
-                            moves.add(new ChessMove(myPosition, inspect, null));
-                        }
+                        moves.addAll(checkPromotes(myPosition, inspect));
                     }
                 }
             }
@@ -115,12 +98,30 @@ public class Pawn extends ChessPiece {
         return moves;
     }
 
-    private HashSet<ChessMove> getPromotes(ChessPosition myPosition, ChessPosition toMove){
+    private HashSet<ChessMove> checkPromotes(ChessPosition myPosition, ChessPosition toMove){
         HashSet<ChessMove> promotions = new HashSet<>();
-        promotions.add(new ChessMove(myPosition, toMove, PieceType.QUEEN));
-        promotions.add(new ChessMove(myPosition, toMove, PieceType.BISHOP));
-        promotions.add(new ChessMove(myPosition, toMove, PieceType.KNIGHT));
-        promotions.add(new ChessMove(myPosition, toMove, PieceType.ROOK));
+        if (this.color == ChessGame.TeamColor.WHITE) {
+            if (toMove.getRow() == 8) {
+                promotions.add(new ChessMove(myPosition, toMove, PieceType.QUEEN));
+                promotions.add(new ChessMove(myPosition, toMove, PieceType.BISHOP));
+                promotions.add(new ChessMove(myPosition, toMove, PieceType.KNIGHT));
+                promotions.add(new ChessMove(myPosition, toMove, PieceType.ROOK));
+            }
+            else{
+                promotions.add(new ChessMove(myPosition, toMove, null));
+            }
+        }
+        else{
+            if (toMove.getRow() == 1) {
+                promotions.add(new ChessMove(myPosition, toMove, PieceType.QUEEN));
+                promotions.add(new ChessMove(myPosition, toMove, PieceType.BISHOP));
+                promotions.add(new ChessMove(myPosition, toMove, PieceType.KNIGHT));
+                promotions.add(new ChessMove(myPosition, toMove, PieceType.ROOK));
+            }
+            else{
+                promotions.add(new ChessMove(myPosition, toMove, null));
+            }
+        }
         return promotions;
     }
 
