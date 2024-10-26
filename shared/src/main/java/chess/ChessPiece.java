@@ -60,7 +60,7 @@ public class ChessPiece {
             case BISHOP:
                 return new Bishop(color).pieceMoves(board, myPosition);
             case ROOK:
-                break;
+                return new Rook(color).pieceMoves(board, myPosition);
             case QUEEN:
                 break;
             case KNIGHT:
@@ -106,12 +106,12 @@ public class ChessPiece {
             switch (vertical) {
                 case UP -> upCount = 1;
                 case DOWN -> upCount = -1;
-                default -> upCount = 0;
+                case null, default -> upCount = 0;
             }
             switch (horizontal) {
                 case RIGHT -> rightCount = 1;
                 case LEFT -> rightCount = -1;
-                default -> rightCount = 0;
+                case null, default -> rightCount = 0;
             }
             inspect = new ChessPosition(inspect.getRow()+upCount, inspect.getColumn()+rightCount);
         }
