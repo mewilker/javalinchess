@@ -56,21 +56,14 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         HashSet<ChessMove> moves = new HashSet<>();
-        switch (type){
-            case BISHOP:
-                return new Bishop(color).pieceMoves(board, myPosition);
-            case ROOK:
-                return new Rook(color).pieceMoves(board, myPosition);
-            case QUEEN:
-                return new Queen(color).pieceMoves(board, myPosition);
-            case KNIGHT:
-                break;
-            case KING:
-                break;
-            case PAWN:
-                break;
-        }
-        return moves;
+        return switch (type) {
+            case BISHOP -> new Bishop(color).pieceMoves(board, myPosition);
+            case ROOK -> new Rook(color).pieceMoves(board, myPosition);
+            case QUEEN -> new Queen(color).pieceMoves(board, myPosition);
+            case KNIGHT -> new Knight(color).pieceMoves(board, myPosition);
+            case KING -> new King(color).pieceMoves(board, myPosition);
+            case PAWN -> new Pawn(color).pieceMoves(board, myPosition);
+        };
     }
 
     protected enum VerticalDirection{
@@ -117,6 +110,17 @@ public class ChessPiece {
         }
 
         return moves;
+    }
+
+    protected boolean canTake(ChessBoard board, ChessPosition toTake){
+        if (!board.isOnBoard(toTake)){
+            return false;
+        }
+        ChessPiece piece = board.getPiece(toTake);
+        if (piece == null || piece.getTeamColor() != color){
+            return true;
+        }
+        return false;
     }
 
     @Override
