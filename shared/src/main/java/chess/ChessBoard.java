@@ -3,6 +3,7 @@ package chess;
 import chess.pieces.*;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 
 /**
@@ -13,7 +14,11 @@ import java.util.Objects;
  */
 public class ChessBoard {
 
-    ChessPiece[][] squares = new ChessPiece[8][8];
+    private final ChessPiece[][] squares = new ChessPiece[8][8];
+    private final HashSet<ChessPosition> whitePieces = new HashSet<>();
+    private final HashSet<ChessPosition> blackPieces = new HashSet<>();
+    private ChessPosition whiteKingPos = null;
+    private ChessPosition blackKingPos = null;
 
     public ChessBoard() {
         
@@ -27,6 +32,18 @@ public class ChessBoard {
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
         squares[position.getRow()-1][position.getColumn()-1] = piece;
+        if (piece.getTeamColor() == ChessGame.TeamColor.WHITE){
+            whitePieces.add(position);
+            if (piece.getPieceType() == ChessPiece.PieceType.KING){
+                whiteKingPos = position;
+            }
+        }
+        else{
+            blackPieces.add(position);
+            if (piece.getPieceType() == ChessPiece.PieceType.KING) {
+                blackKingPos = position;
+            }
+        }
     }
 
     /**
@@ -80,6 +97,20 @@ public class ChessBoard {
         for(int i = 1; i < 9; i++){
             addPiece(new ChessPosition(7, i), new Pawn(ChessGame.TeamColor.BLACK));
         }
+    }
+
+    public ChessPosition getKingPosition(ChessGame.TeamColor color){
+        if (color == ChessGame.TeamColor.WHITE){
+            return whiteKingPos;
+        }
+        return blackKingPos;
+    }
+
+    public HashSet<ChessPosition> getTeamPieces(ChessGame.TeamColor color){
+        if (color == ChessGame.TeamColor.WHITE){
+            return whitePieces;
+        }
+        return blackPieces;
     }
 
     @Override
