@@ -42,16 +42,17 @@ public class ChessBoard {
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
         squares[position.getRow()-1][position.getColumn()-1] = piece;
-        if (piece.getTeamColor() == ChessGame.TeamColor.WHITE){
-            whitePieces.add(position);
-            if (piece.getPieceType() == ChessPiece.PieceType.KING){
-                whiteKingPos = position;
-            }
-        }
-        else{
-            blackPieces.add(position);
-            if (piece.getPieceType() == ChessPiece.PieceType.KING) {
-                blackKingPos = position;
+        if (piece != null) {
+            if (piece.getTeamColor() == ChessGame.TeamColor.WHITE) {
+                whitePieces.add(position);
+                if (piece.getPieceType() == ChessPiece.PieceType.KING) {
+                    whiteKingPos = position;
+                }
+            } else {
+                blackPieces.add(position);
+                if (piece.getPieceType() == ChessPiece.PieceType.KING) {
+                    blackKingPos = position;
+                }
             }
         }
     }
