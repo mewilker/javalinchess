@@ -15,13 +15,23 @@ import java.util.Objects;
 public class ChessBoard {
 
     private final ChessPiece[][] squares = new ChessPiece[8][8];
-    private final HashSet<ChessPosition> whitePieces = new HashSet<>();
-    private final HashSet<ChessPosition> blackPieces = new HashSet<>();
+    private HashSet<ChessPosition> whitePieces = new HashSet<>();
+    private HashSet<ChessPosition> blackPieces = new HashSet<>();
     private ChessPosition whiteKingPos = null;
     private ChessPosition blackKingPos = null;
 
-    public ChessBoard() {
-        
+    public ChessBoard() {}
+
+    public ChessBoard(ChessBoard other){
+        this.blackKingPos = other.blackKingPos;
+        this.whiteKingPos = other.whiteKingPos;
+        this.blackPieces = new HashSet<>(other.blackPieces);
+        this.whitePieces = new HashSet<>(other.whitePieces);
+        for (int i = 0; i < 8; i++){
+            for (int j = 0; j < 8; j++){
+                this.squares[i][j] = other.squares[i][j];
+            }
+        }
     }
 
     /**
@@ -111,6 +121,51 @@ public class ChessBoard {
             return whitePieces;
         }
         return blackPieces;
+    }
+
+    /**
+     * Edits squares based on ChessMove given to it.
+     * <p>
+     * Does not validate that the move is a possible piece move.
+     * @param move
+     * @throws InvalidMoveException when starting position is empty or promotion is invalid
+     */
+    public void makeMove(ChessMove move) throws InvalidMoveException{
+        ChessPiece piece = getPiece(move.getStartPosition());
+        if (piece == null){
+            throw new InvalidMoveException("There is no piece at " + move.getStartPosition().toString());
+        }
+        ChessPiece captured = getPiece(move.getEndPosition());
+        if (piece.getTeamColor() == ChessGame.TeamColor.WHITE){
+            whitePieces.remove(move.getStartPosition());
+            whitePieces.add(move.getEndPosition());
+            if (piece.getPieceType() == ChessPiece.PieceType.KING){
+                whiteKingPos = move.getEndPosition();
+            }
+            if (captured != null){
+                blackPieces.remove(move.getEndPosition());
+            }
+        }
+        else{
+            blackPieces.remove(move.getStartPosition());
+            blackPieces.add(move.getEndPosition());
+            if (piece.getPieceType() == ChessPiece.PieceType.KING){
+                blackKingPos = move.getEndPosition();
+            }
+            if (captured != null){
+                whitePieces.remove(move.getEndPosition());
+            }
+        }
+        addPiece(move.getStartPosition(), null);
+        switch (move.getPromotionPiece()){
+            case BISHOP -> addPiece(move.getEndPosition(), new Bishop(piece.getTeamColor()));
+            case ROOK -> addPiece(move.getEndPosition(), new Rook(piece.getTeamColor()));
+            case QUEEN -> addPiece(move.getEndPosition(), new Queen(piece.getTeamColor()));
+            case KNIGHT -> addPiece(move.getEndPosition(), new Knight(piece.getTeamColor()));
+            case null -> addPiece(move.getEndPosition(), piece);
+            default -> throw new InvalidMoveException("Cannot promote to type " + move.getPromotionPiece().toString());
+        }
+        //FIXME: if a bad promotion is given and the board isn't copied... this function will DOOM the program
     }
 
     @Override
