@@ -117,7 +117,7 @@ public class ChessBoard {
         return blackKingPos;
     }
 
-    public HashSet<ChessPosition> getTeamPieces(ChessGame.TeamColor color){
+    public HashSet<ChessPosition> getTeamPiecePositions(ChessGame.TeamColor color){
         if (color == ChessGame.TeamColor.WHITE){
             return whitePieces;
         }
@@ -127,7 +127,7 @@ public class ChessBoard {
     /**
      * Edits squares based on ChessMove given to it.
      * <p>
-     * Does not validate that the move is a possible piece move.
+     * Does not validate that the move is a valid piece move.
      * @param move
      * @throws InvalidMoveException when starting position is empty or promotion is invalid
      */
