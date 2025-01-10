@@ -8,8 +8,8 @@ import response.RegisterResult;
 import response.Result;
 
 public class RegisterService {
-    UserDAO userDB;
-    AuthDAO authDB;
+    private final UserDAO userDB;
+    private final AuthDAO authDB;
 
     public RegisterService(UserDAO user, AuthDAO auth){
         userDB = user;

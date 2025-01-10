@@ -10,8 +10,8 @@ import response.RegisterResult;
 import response.Result;
 
 public class LoginService {
-    UserDAO userDB;
-    AuthDAO authDB;
+    private final UserDAO userDB;
+    private final AuthDAO authDB;
 
     public LoginService (UserDAO user, AuthDAO auth){
         userDB = user;
