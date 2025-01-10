@@ -12,7 +12,7 @@ import response.Result;
 import services.ClearService;
 
 public class ClearHandler implements Handler {
-    ClearService service;
+    private final ClearService service;
 
     public ClearHandler(UserDAO user, AuthDAO auth, GameDAO game){
         service = new ClearService(user, auth, game);

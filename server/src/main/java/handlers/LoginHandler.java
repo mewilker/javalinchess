@@ -13,7 +13,7 @@ import response.Result;
 import services.LoginService;
 
 public class LoginHandler implements Handler {
-    private LoginService service;
+    private final LoginService service;
     public LoginHandler(UserDAO userDAO, AuthDAO authDAO){
         service = new LoginService(userDAO, authDAO);
     }

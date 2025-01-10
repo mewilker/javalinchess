@@ -14,7 +14,7 @@ import services.RegisterService;
 import java.util.Objects;
 
 public class RegisterHandler implements Handler {
-    RegisterService service;
+    private final RegisterService service;
     public RegisterHandler(UserDAO user, AuthDAO auth){
         service = new RegisterService(user, auth);
     }
