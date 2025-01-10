@@ -3,6 +3,7 @@ package server;
 import dataaccess.*;
 import handlers.ClearHandler;
 import handlers.LoginHandler;
+import handlers.LogoutHandler;
 import handlers.RegisterHandler;
 import io.javalin.Javalin;
 import response.Result;
@@ -28,7 +29,7 @@ public class Server {
         javalin.delete("/db", new ClearHandler(userDB,authDB,gameDB));
         javalin.post("/user", new RegisterHandler(userDB, authDB));
         javalin.post("/session", new LoginHandler(userDB, authDB));
-        javalin.delete("/session",);
+        javalin.delete("/session", new LogoutHandler(authDB));
 
         javalin.exception(DataAccessException.class, (e, ctx)->{
             ctx.status(500);
