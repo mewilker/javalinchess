@@ -23,6 +23,10 @@ public class MemGameDAO implements GameDAO{
         return new ArrayList<>(gameDB.values());
     }
 
+    public GameData getGame(int gameID){
+        gameDB.get(gameID);
+    }
+
     @Override
     public void updateGame(GameData game) {
         gameDB.put(game.gameID(), game);
