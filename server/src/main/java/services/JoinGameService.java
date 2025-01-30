@@ -19,5 +19,6 @@ public class JoinGameService {
 
     public Result joinGame(JoinGameRequest request){
         gameDB.getGame(request.getGameID());
+        return null;
     }
 }

@@ -1,15 +1,14 @@
-package passoff.chess.piece;
+package passoff.chess.piecemoves;
 
 import chess.ChessPosition;
 import org.junit.jupiter.api.Test;
-
-import static passoff.chess.TestUtilities.validateMoves;
+import passoff.chess.TestUtilities;
 
 public class KingMoveTests {
 
     @Test
-    public void kingMoveUntilEdge() {
-        validateMoves("""
+    public void kingMiddleOfBoard() {
+        TestUtilities.validateMoves("""
                         | | | | | | | | |
                         | | | | | | | | |
                         | | | | | | | | |
@@ -27,7 +26,7 @@ public class KingMoveTests {
 
     @Test
     public void kingCaptureEnemy() {
-        validateMoves("""
+        TestUtilities.validateMoves("""
                         | | | | | | | | |
                         | | | | | | | | |
                         | | | | | | | | |
@@ -45,7 +44,7 @@ public class KingMoveTests {
 
     @Test
     public void kingBlocked() {
-        validateMoves("""
+        TestUtilities.validateMoves("""
                         | | | | | | |r|k|
                         | | | | | | |p|p|
                         | | | | | | | | |
