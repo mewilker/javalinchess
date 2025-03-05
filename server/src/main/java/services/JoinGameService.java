@@ -11,7 +11,7 @@ public class JoinGameService {
     private final AuthDAO authDB;
     private final UserDAO userDB;
 
-    public JoinGameService(UserDAO user, AuthDAO auth, GameDAO game) {
+    public JoinGameService(UserDAO user, AuthDAO auth, GameDAO game {
         userDB = user;
         authDB = auth;
         gameDB = game;
@@ -19,6 +19,5 @@ public class JoinGameService {
 
     public Result joinGame(JoinGameRequest request){
         gameDB.getGame(request.getGameID());
-        return null;
     }
 }

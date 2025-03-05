@@ -24,7 +24,7 @@ public class MemGameDAO implements GameDAO{
     }
 
     public GameData getGame(int gameID){
-        return gameDB.get(gameID);
+        gameDB.get(gameID);
     }
 
     @Override
