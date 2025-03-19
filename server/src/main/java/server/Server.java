@@ -9,12 +9,24 @@ import io.javalin.http.UnauthorizedResponse;
 import response.Result;
 import com.google.gson.Gson;
 
+import java.util.Arrays;
+
 public class Server {
     //Spark.staticFiles.location("web");
     Javalin javalin = Javalin.create(config -> config.staticFiles.add("/web"));
     UserDAO userDB = new MemUserDAO();
     AuthDAO authDB = new MemAuthDAO();
     GameDAO gameDB = new MemGameDAO();
+
+    public Server(){
+        try{
+            DatabaseManager.createDatabase();
+            userDB = new SQLUserDAO();
+        }
+        catch (DataAccessException e){
+            throw new RuntimeException(e);
+        }
+    }
 
     public int run(int desiredPort) {
         if (desiredPort == 0){
