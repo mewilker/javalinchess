@@ -1,5 +1,6 @@
 package services;
 
+import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import requests.CreateGameRequest;
 import response.CreateGameResult;
@@ -11,7 +12,7 @@ public class CreateGameService {
         gameDB = gameDAO;
     }
 
-    public Result createGame (CreateGameRequest request){
+    public Result createGame (CreateGameRequest request) throws DataAccessException {
         int gameID = gameDB.insertGame(request.getGameName());
         return new CreateGameResult(gameID);
     }
