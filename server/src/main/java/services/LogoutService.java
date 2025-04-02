@@ -2,7 +2,6 @@ package services;
 
 import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
-import dataaccess.UserDAO;
 import datamodels.AuthData;
 import requests.LogoutRequest;
 import response.Result;
