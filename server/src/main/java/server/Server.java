@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public class Server {
     //Spark.staticFiles.location("web");
-    Javalin javalin = Javalin.create(config -> config.staticFiles.add("/web"));
+    private final Javalin javalin = Javalin.create(config -> config.staticFiles.add("/web"));
     UserDAO userDB = new MemUserDAO();
     AuthDAO authDB = new MemAuthDAO();
     GameDAO gameDB = new MemGameDAO();
@@ -29,12 +29,7 @@ public class Server {
     }
 
     public int run(int desiredPort) {
-        if (desiredPort == 0){
-            javalin.start();
-        }
-        else {
-            javalin.start(desiredPort);
-        }
+        javalin.start(desiredPort);
 
 
         // Register your endpoints and handle exceptions here.
