@@ -25,4 +25,8 @@ public class JoinGameRequest {
         return authToken;
     }
 
+    public void setAuthToken(String token){
+        authToken = token;
+    }
+
 }
