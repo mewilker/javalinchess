@@ -9,7 +9,6 @@ import io.javalin.http.UnauthorizedResponse;
 import response.Result;
 import com.google.gson.Gson;
 
-import java.util.Arrays;
 
 public class Server {
     private final Javalin javalin = Javalin.create(config -> config.staticFiles.add("/web"));
@@ -58,9 +57,7 @@ public class Server {
     }
 
     public void stop() {
-        //Spark.stop();
         javalin.stop();
-        //Spark.awaitStop();
     }
 
     public void authCheck(Context context) throws DataAccessException{
