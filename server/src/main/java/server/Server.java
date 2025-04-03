@@ -12,7 +12,6 @@ import com.google.gson.Gson;
 import java.util.Arrays;
 
 public class Server {
-    //Spark.staticFiles.location("web");
     private final Javalin javalin = Javalin.create(config -> config.staticFiles.add("/web"));
     UserDAO userDB = new MemUserDAO();
     AuthDAO authDB = new MemAuthDAO();
@@ -40,6 +39,7 @@ public class Server {
         javalin.before("/game", this::authCheck);
         javalin.get("/game", new ListGamesHandler(gameDB));
         javalin.post("/game", new CreateGameHandler(gameDB));
+        javalin.put("/game", new JoinGameHandler(gameDB, authDB));
 
         javalin.exception(DataAccessException.class, (e, ctx)->{
             ctx.status(500);
