@@ -17,13 +17,13 @@ public class Server {
     GameDAO gameDB = new MemGameDAO();
 
     public Server(){
-        try{
+        /*try{
             DatabaseManager.createDatabase();
             userDB = new SQLUserDAO();
         }
         catch (DataAccessException e){
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     public int run(int desiredPort) {
