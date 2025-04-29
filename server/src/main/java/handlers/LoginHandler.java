@@ -23,8 +23,8 @@ public class LoginHandler implements Handler {
         LoginRequest request = new Gson().fromJson(context.body(), LoginRequest.class);
         Result result = new Result();
         if (request.getPassword()==null || request.getUsername() == null) {
-            context.status(401);
-            result.setMessage("Error: unauthorized access");
+            context.status(400);
+            result.setMessage("Error: bad request");
             context.json(new Gson().toJson(result));
             return;
         }
