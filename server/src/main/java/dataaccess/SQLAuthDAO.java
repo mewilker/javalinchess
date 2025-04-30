@@ -1,7 +1,6 @@
 package dataaccess;
 
 import datamodels.AuthData;
-import datamodels.UserData;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
