@@ -17,13 +17,15 @@ public class Server {
     GameDAO gameDB = new MemGameDAO();
 
     public Server(){
-        /*try{
+        try{
             DatabaseManager.createDatabase();
             userDB = new SQLUserDAO();
+            authDB = new SQLAuthDAO();
+            gameDB = new SQLGameDAO();
         }
         catch (DataAccessException e){
             throw new RuntimeException(e);
-        }*/
+        }
     }
 
     public int run(int desiredPort) {
@@ -41,6 +43,7 @@ public class Server {
         javalin.put("/game", new JoinGameHandler(gameDB, authDB));
 
         javalin.exception(DataAccessException.class, (e, ctx)->{
+            e.printStackTrace(System.err);
             ctx.status(500);
             Result result = new Result();
             result.setMessage(e.getMessage());
