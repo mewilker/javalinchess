@@ -46,7 +46,7 @@ public class Server {
             e.printStackTrace(System.err);
             ctx.status(500);
             Result result = new Result();
-            result.setMessage(e.getMessage());
+            result.setMessage("There was an error with the server. Please try again later.");
             ctx.json(new Gson().toJson(result));
         });
 

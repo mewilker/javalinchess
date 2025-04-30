@@ -19,16 +19,9 @@ public class ClearHandler implements Handler {
     }
 
     @Override
-    public void handle(@NotNull Context context){
-        try{
-            service.clear();
-            context.status(200);
-            context.json("{}");
-        } catch (DataAccessException e){
-            context.status(500);
-            Result result = new Result();
-            result.setMessage(e.getMessage());
-            context.json(new Gson().toJson(result));
-        }
+    public void handle(@NotNull Context context)throws DataAccessException{
+        service.clear();
+        context.status(200);
+        context.json("{}");
     }
 }
