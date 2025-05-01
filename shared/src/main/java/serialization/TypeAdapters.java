@@ -20,25 +20,21 @@ public class TypeAdapters {
     }
 
     public static JsonDeserializer<ChessPiece> pieceDeserializer(){
-        return new JsonDeserializer<ChessPiece>() {
-            @Override
-            public ChessPiece deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context)
-                    throws JsonParseException {
-                JsonObject obj = jsonElement.getAsJsonObject();
-                JsonPrimitive prim = obj.getAsJsonPrimitive("type");
-                if (prim == null){
-                    throw new JsonParseException("Could not deserialize ChessPiece due to no piece type");
-                }
-                String pieceType = prim.getAsString();
-                return switch (ChessPiece.PieceType.valueOf(pieceType)) {
-                    case PAWN -> context.deserialize(jsonElement, Pawn.class);
-                    case ROOK -> context.deserialize(jsonElement, Rook.class);
-                    case BISHOP -> context.deserialize(jsonElement, Bishop.class);
-                    case QUEEN -> context.deserialize(jsonElement, Queen.class);
-                    case KNIGHT -> context.deserialize(jsonElement, Knight.class);
-                    case KING -> context.deserialize(jsonElement, King.class);
-                };
+        return (jsonElement, type, context) -> {
+            JsonObject obj = jsonElement.getAsJsonObject();
+            JsonPrimitive prim = obj.getAsJsonPrimitive("type");
+            if (prim == null) {
+                throw new JsonParseException("Could not deserialize ChessPiece due to no piece type");
             }
+            String pieceType = prim.getAsString();
+            return switch (ChessPiece.PieceType.valueOf(pieceType)) {
+                case PAWN -> context.deserialize(jsonElement, Pawn.class);
+                case ROOK -> context.deserialize(jsonElement, Rook.class);
+                case BISHOP -> context.deserialize(jsonElement, Bishop.class);
+                case QUEEN -> context.deserialize(jsonElement, Queen.class);
+                case KNIGHT -> context.deserialize(jsonElement, Knight.class);
+                case KING -> context.deserialize(jsonElement, King.class);
+            };
         };
     }
 
