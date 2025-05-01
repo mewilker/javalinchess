@@ -1,33 +1,43 @@
 package serialization;
 
+import chess.ChessGame;
 import chess.ChessPiece;
 import chess.pieces.*;
-import com.google.gson.Gson;
-import com.google.gson.TypeAdapter;
+import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 public class TypeAdapters {
-    public static TypeAdapter<ChessPiece> pieceTypeAdapter(){
-        return new TypeAdapter<>() {
-            private final Gson GSON = new Gson();
-            @Override
-            public void write(JsonWriter jsonWriter, ChessPiece chessPiece) throws IOException {
-                switch (chessPiece.getPieceType()){
-                    case KNIGHT -> GSON.getAdapter(Knight.class).write(jsonWriter, (Knight) chessPiece);
-                    case QUEEN -> GSON.getAdapter(Queen.class).write(jsonWriter,(Queen) chessPiece);
-                    case KING -> GSON.getAdapter(King.class).write(jsonWriter, (King) chessPiece);
-                    case ROOK -> GSON.getAdapter(Rook.class).write(jsonWriter,(Rook) chessPiece);
-                    case BISHOP -> GSON.getAdapter(Bishop.class).write(jsonWriter, (Bishop) chessPiece);
-                    case PAWN -> GSON.getAdapter(Pawn.class).write(jsonWriter, (Pawn) chessPiece);
-                }
-            }
 
+    public static void main(String[] args){
+        String json = new Gson().toJson(new Knight(ChessGame.TeamColor.BLACK));
+        Gson testMe = new GsonBuilder().registerTypeAdapter(ChessPiece.class, TypeAdapters.pieceDeserializer()).create();
+        ChessPiece piece = testMe.fromJson(json, ChessPiece.class);
+        System.out.println(piece);
+    }
+
+    public static JsonDeserializer<ChessPiece> pieceDeserializer(){
+        return new JsonDeserializer<ChessPiece>() {
             @Override
-            public ChessPiece read(JsonReader jsonReader) throws IOException {
-                return null;
+            public ChessPiece deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context)
+                    throws JsonParseException {
+                JsonObject obj = jsonElement.getAsJsonObject();
+                JsonPrimitive prim = obj.getAsJsonPrimitive("type");
+                if (prim == null){
+                    throw new JsonParseException("Could not deserialize ChessPiece due to no piece type");
+                }
+                String pieceType = prim.getAsString();
+                return switch (ChessPiece.PieceType.valueOf(pieceType)) {
+                    case PAWN -> context.deserialize(jsonElement, Pawn.class);
+                    case ROOK -> context.deserialize(jsonElement, Rook.class);
+                    case BISHOP -> context.deserialize(jsonElement, Bishop.class);
+                    case QUEEN -> context.deserialize(jsonElement, Queen.class);
+                    case KNIGHT -> context.deserialize(jsonElement, Knight.class);
+                    case KING -> context.deserialize(jsonElement, King.class);
+                };
             }
         };
     }
