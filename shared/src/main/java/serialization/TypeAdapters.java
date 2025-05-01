@@ -1,22 +1,25 @@
 package serialization;
 
-import chess.ChessGame;
 import chess.ChessPiece;
 import chess.pieces.*;
 import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import response.CreateGameResult;
+import response.ListGamesResult;
+import response.LoginResult;
+import response.Result;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class TypeAdapters {
 
     public static void main(String[] args){
-        String json = new Gson().toJson(new Knight(ChessGame.TeamColor.BLACK));
-        Gson testMe = new GsonBuilder().registerTypeAdapter(ChessPiece.class, TypeAdapters.pieceDeserializer()).create();
-        ChessPiece piece = testMe.fromJson(json, ChessPiece.class);
-        System.out.println(piece);
+        Result first = new ListGamesResult(new ArrayList<>());
+        //first.setMessage("I have a result");
+        String json = new Gson().toJson(first);
+        Gson testMe = new GsonBuilder().registerTypeAdapter(Result.class, TypeAdapters.resultDeserializer()).create();
+        Result result = testMe.fromJson(json, Result.class);
+        ListGamesResult finish = (ListGamesResult) result;
+        System.out.println(finish.getGames());
     }
 
     public static JsonDeserializer<ChessPiece> pieceDeserializer(){
@@ -35,6 +38,30 @@ public class TypeAdapters {
                 case KNIGHT -> context.deserialize(jsonElement, Knight.class);
                 case KING -> context.deserialize(jsonElement, King.class);
             };
+        };
+    }
+
+    //TODO: this is not the prettiest, most maintainable way to determine result type. Fix it.
+    public static JsonDeserializer<Result> resultDeserializer(){
+        return (jsonElement, type, context) -> {
+            JsonObject obj = jsonElement.getAsJsonObject();
+            JsonPrimitive prim = obj.getAsJsonPrimitive("message");
+            if (prim != null){
+                return new Gson().fromJson(jsonElement, Result.class);
+            }
+            prim = obj.getAsJsonPrimitive("authToken");
+            if (prim != null){
+                return context.deserialize(jsonElement, LoginResult.class);
+            }
+            prim = obj.getAsJsonPrimitive("gameID");
+            if (prim != null){
+                return context.deserialize(jsonElement, CreateGameResult.class);
+            }
+            JsonArray array = obj.getAsJsonArray("games");
+            if (array != null){
+                return context.deserialize(jsonElement, ListGamesResult.class);
+            }
+            return null;
         };
     }
 
