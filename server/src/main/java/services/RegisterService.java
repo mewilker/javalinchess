@@ -5,7 +5,7 @@ import datamodels.AuthData;
 import datamodels.UserData;
 import org.mindrot.jbcrypt.BCrypt;
 import requests.RegisterRequest;
-import response.RegisterResult;
+import response.LoginResult;
 import response.Result;
 
 public class RegisterService {
@@ -24,7 +24,7 @@ public class RegisterService {
                     BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()),
                     request.getEmail()));
             AuthData auth = authDB.insertAuth(request.getUsername());
-            return new RegisterResult(auth.authToken(), auth.username());
+            return new LoginResult(auth.authToken(), auth.username());
         }
         Result result = new Result();
         result.setMessage("Error: Username already taken");

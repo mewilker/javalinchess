@@ -7,7 +7,7 @@ import datamodels.AuthData;
 import datamodels.UserData;
 import org.mindrot.jbcrypt.BCrypt;
 import requests.LoginRequest;
-import response.RegisterResult;
+import response.LoginResult;
 import response.Result;
 
 public class LoginService {
@@ -27,6 +27,6 @@ public class LoginService {
             return unauthorized;
         }
         AuthData newAuth = authDB.insertAuth(request.getUsername());
-        return new RegisterResult(newAuth.authToken(), newAuth.username());
+        return new LoginResult(newAuth.authToken(), newAuth.username());
     }
 }
