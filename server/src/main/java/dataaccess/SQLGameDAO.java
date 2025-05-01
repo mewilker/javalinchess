@@ -1,13 +1,19 @@
 package dataaccess;
 
 import chess.ChessGame;
+import chess.ChessPiece;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import datamodels.GameData;
+import serialization.TypeAdapters;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class SQLGameDAO implements GameDAO{
+    private final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(ChessPiece.class, TypeAdapters.pieceDeserializer())
+            .create();
     public SQLGameDAO() throws DataAccessException{
         String statement = """
                 CREATE TABLE IF NOT EXISTS games (
@@ -64,7 +70,7 @@ public class SQLGameDAO implements GameDAO{
                         resultSet.getString("name"),
                         resultSet.getString("whiteUser"),
                         resultSet.getString("blackUser"),
-                        new Gson().fromJson(resultSet.getString("game"), ChessGame.class)
+                        GSON.fromJson(resultSet.getString("game"), ChessGame.class)
                 );
                 games.add(data);
             }
@@ -116,7 +122,7 @@ public class SQLGameDAO implements GameDAO{
                              resultSet.getString("name"),
                              resultSet.getString("whiteUser"),
                              resultSet.getString("blackUser"),
-                             new Gson().fromJson(resultSet.getString("game"), ChessGame.class)
+                             GSON.fromJson(resultSet.getString("game"), ChessGame.class)
                      );
                  }
              }
