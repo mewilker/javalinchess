@@ -20,6 +20,7 @@ public class HttpCommunicator {
             .registerTypeAdapter(ChessPiece.class, TypeAdapters.pieceDeserializer())
             .create();
     private int lastStatusCode;
+    private final String communicationError = "There was an issue contacting the server";
 
     public Result doPost(String url, String token, Object request) throws ServerErrorException {
         String body = new Gson().toJson(request);
@@ -67,6 +68,23 @@ public class HttpCommunicator {
         }
         catch (URISyntaxException | IOException | InterruptedException e){
             throw new ServerErrorException("There was an issue contacting the server", e);
+        }
+    }
+
+    public Result doPut(String url, String token, Object request) throws ServerErrorException{
+        String body = new Gson().toJson(request);
+        try{
+            HttpRequest httpRequest = HttpRequest.newBuilder(new URI(url))
+                    .PUT(HttpRequest.BodyPublishers.ofString(body))
+                    .header("Content-Type", "application/json")
+                    .header("authorization", token)
+                    .build();
+            HttpResponse<String> response = http.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            lastStatusCode = response.statusCode();
+            return GSON.fromJson(response.body(), Result.class);
+        }
+        catch (URISyntaxException | IOException | InterruptedException e){
+            throw new ServerErrorException(communicationError, e);
         }
     }
 
