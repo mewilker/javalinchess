@@ -31,12 +31,10 @@ public class HttpCommunicator {
                     .header("authorization", token)
                     .build();
 
-            HttpResponse<String> result = http.send(httpReq, HttpResponse.BodyHandlers.ofString());
-            lastStatusCode = result.statusCode();
-            return GSON.fromJson(result.body(), Result.class);
+            return sendRequest(httpReq);
         }
-        catch (URISyntaxException | IOException | InterruptedException e){
-            throw new ServerErrorException("There was an issue contacting the server", e);
+        catch (URISyntaxException e){
+            throw new ServerErrorException(communicationError, e);
         }
     }
 
@@ -47,12 +45,10 @@ public class HttpCommunicator {
                     .header("authorization", token)
                     .build();
 
-            HttpResponse<String> result = http.send(request, HttpResponse.BodyHandlers.ofString());
-            lastStatusCode = result.statusCode();
-            return GSON.fromJson(result.body(), Result.class);
+            return sendRequest(request);
         }
-        catch (URISyntaxException | IOException | InterruptedException e){
-            throw new ServerErrorException("There was an issue contacting the server", e);
+        catch (URISyntaxException e){
+            throw new ServerErrorException(communicationError, e);
         }
     }
 
@@ -62,12 +58,10 @@ public class HttpCommunicator {
                     .GET()
                     .header("authorization", token)
                     .build();
-            HttpResponse<String> result = http.send(request, HttpResponse.BodyHandlers.ofString());
-            lastStatusCode = result.statusCode();
-            return GSON.fromJson(result.body(), Result.class);
+            return sendRequest(request);
         }
-        catch (URISyntaxException | IOException | InterruptedException e){
-            throw new ServerErrorException("There was an issue contacting the server", e);
+        catch (URISyntaxException e){
+            throw new ServerErrorException(communicationError, e);
         }
     }
 
@@ -79,11 +73,20 @@ public class HttpCommunicator {
                     .header("Content-Type", "application/json")
                     .header("authorization", token)
                     .build();
-            HttpResponse<String> response = http.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            return sendRequest(httpRequest);
+        }
+        catch (URISyntaxException e){
+            throw new ServerErrorException(communicationError, e);
+        }
+    }
+
+    public Result sendRequest(HttpRequest request) throws ServerErrorException{
+        try {
+            HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
             lastStatusCode = response.statusCode();
             return GSON.fromJson(response.body(), Result.class);
         }
-        catch (URISyntaxException | IOException | InterruptedException e){
+        catch (InterruptedException | IOException e){
             throw new ServerErrorException(communicationError, e);
         }
     }
