@@ -1,5 +1,6 @@
 package facade;
 
+import chess.ChessGame;
 import datamodels.GameData;
 import requests.*;
 import response.*;
@@ -47,7 +48,7 @@ public class ServerFacade {
     }
 
     public void logout() throws ServerErrorException {
-        Result result = http.doDelete(url + "/session", authToken);
+        http.doDelete(url + "/session", authToken);
         authToken = "";
         if (http.getLastStatusCode() != 200){
             //TODO: log to standard err
@@ -74,10 +75,22 @@ public class ServerFacade {
         if (result instanceof ListGamesResult list){
             return list.getGames();
         }
+        if (http.getLastStatusCode() == 401){
+            authToken = "";
+            throw new ServerErrorException("Authorization expired");
+        }
         throw new ServerErrorException(result.getMessage());
     }
 
-    public Result joinGame(JoinGameRequest request) throws ServerErrorException{
-        return null;
+    public void joinGame(ChessGame.TeamColor color, int gameID) throws ServerErrorException{
+        JoinGameRequest request = new JoinGameRequest(color, gameID, "");
+        Result result = http.doPut(url + "/game", authToken, request);
+        switch (http.getLastStatusCode()){
+            case 200 : return;
+            case 403 : throw new ServerErrorException("Color already taken");
+            case 401 : authToken = "";
+                throw new ServerErrorException("Authorization expired");
+            default: throw new ServerErrorException(result.getMessage());
+        }
     }
 }
