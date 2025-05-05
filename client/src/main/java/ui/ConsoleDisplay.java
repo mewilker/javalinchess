@@ -35,7 +35,7 @@ public class ConsoleDisplay {
 
     }
 
-    public String entryField(String prompt){
+    public String stringField(String prompt){
         out.print(SET_TEXT_BOLD);
         out.print(prompt + ":");
         out.print(RESET_TEXT_BOLD_FAINT);
