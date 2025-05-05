@@ -53,4 +53,27 @@ public class ConsoleDisplay {
         out.print(toPrint);
     }
 
+    public int numberEntryField(String prompt){
+        String numberString = stringField(prompt);
+        int number = 0;
+        do{
+            try{
+                number = Integer.parseInt(numberString);
+            }
+            catch (NumberFormatException e){
+                printError("\"" + numberString + "\" is not a valid number. Please try again.\n");
+                numberString = getInput();
+            }
+        } while (number <= 0);
+        return number;
+    }
+
+    public void printError(String toPrint){
+        out.print(SET_TEXT_COLOR_RED);
+        out.print(SET_TEXT_BOLD);
+        out.print(toPrint);
+        out.print(SET_TEXT_COLOR_BLUE);
+        out.print(RESET_TEXT_BOLD_FAINT);
+    }
+
 }
