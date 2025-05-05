@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
 
-public class ConsoleDisplay {
+public class ConsoleDisplay implements Display{
     private final PrintStream out;
     private final Scanner in;
 
