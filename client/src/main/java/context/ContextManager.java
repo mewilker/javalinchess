@@ -15,6 +15,7 @@ public class ContextManager {
     public ContextManager(Display display, ServerFacade server){
         this.display = display;
         this.server = server;
+        context = new PreLogin(display, server);
     }
 
     public void run(){
