@@ -21,7 +21,7 @@ public class ConsoleDisplay implements Display{
         out.print(WHITE_QUEEN);
         out.print(" Welcome to Makenna's Chess Server!");
         out.print(WHITE_QUEEN);
-        out.print("\n\n\n");
+        out.print("\n\n");
         out.print(RESET_TEXT_BOLD_FAINT);
         out.print(SET_TEXT_COLOR_BLUE);
     }

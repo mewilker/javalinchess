@@ -7,7 +7,7 @@ import ui.Display;
 public class PreLogin implements Context{
     Display display;
     ServerFacade server;
-    PreLogin(Display display, ServerFacade server){
+    public PreLogin(Display display, ServerFacade server){
         this.display = display;
         this.server = server;
     }
@@ -53,6 +53,7 @@ public class PreLogin implements Context{
                 Type "quit" to exit
                 Type "register" or "r" to create an account
                 Type "login" or "l" to access an existing account
+                
                 """;
         display.printText(menu);
 

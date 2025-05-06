@@ -22,7 +22,7 @@ public class ContextManager {
         String command = "";
         while(!command.contains("quit")){
             context = context.eval(command);
-            command = display.stringField("");
+            command = display.stringField("Chess");
             command = command.toLowerCase(Locale.ROOT);
         }
     }
