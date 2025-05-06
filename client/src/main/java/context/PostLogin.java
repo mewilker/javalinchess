@@ -21,7 +21,14 @@ public class PostLogin implements Context{
 
     @Override
     public Context eval(String command) {
-        return this;
+        return switch (command){
+            case "list", "refresh", "r" -> listGames();
+            case "create", "c" -> createGame();
+            case "join", "j", "play", "p" -> playGame();
+            case "observe", "o" -> observeGame();
+            case "logout", "l" -> logout();
+            default -> menu();
+        };
     }
 
     private Context listGames(){
@@ -48,6 +55,21 @@ public class PostLogin implements Context{
             display.printError(e.getMessage());
         }
         return new PreLogin(display, server);
+    }
+
+    private Context menu(){
+        String menu = """
+                ****OPTIONS****
+                Type "help" for options
+                Type "logout" or "l" to logout
+                Type "create" or "c" to make a new game
+                Type "refresh", "r" or "list" to see the list of existing games
+                Type "join", "j", "play" or "p" to play a game
+                Type "observe" or "o" to watch a game
+                Type "quit" to exit
+                """;
+        display.printText(menu);
+        return this;
     }
 
     private void populateGames() throws ServerErrorException{
