@@ -54,6 +54,7 @@ public class PreLogin implements Context{
                 Type "register" or "r" to create an account
                 Type "login" or "l" to access an existing account
                 """;
+        display.printText(menu);
 
         return this;
     }
