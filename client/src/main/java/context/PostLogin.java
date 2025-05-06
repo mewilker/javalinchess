@@ -16,4 +16,24 @@ public class PostLogin implements Context{
     public Context eval(String command) {
         return this;
     }
+
+    private Context listGames(){
+        return this;
+    }
+
+    private Context createGame(){
+        return this;
+    }
+
+    private Context playGame(){
+        return this;
+    }
+
+    private Context observeGame(){
+        return this;
+    }
+
+    private Context logout(){
+        return new PreLogin(display, server);
+    }
 }
