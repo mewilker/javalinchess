@@ -21,7 +21,7 @@ public class PreLogin implements Context{
         };
     }
 
-    public Context register(){
+    private Context register(){
         String username = display.stringField("Username");
         String password = display.stringField("Password");
         String email = display.stringField("Email");
@@ -34,7 +34,7 @@ public class PreLogin implements Context{
         return this;
     }
 
-    public Context login(){
+    private Context login(){
         String username = display.stringField("Username");
         String password = display.stringField("Password");
         try{
@@ -46,7 +46,7 @@ public class PreLogin implements Context{
         return this;
     }
 
-    public Context menu(){
+    private Context menu(){
         String menu = """
                 ****OPTIONS****
                 Type "help" for options
