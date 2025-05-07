@@ -63,7 +63,7 @@ public class ConsoleDisplay implements Display {
             try {
                 number = Integer.parseInt(numberString);
             } catch (NumberFormatException e) {
-                printError("\"" + numberString + "\" is not a valid number. Please try again.");
+                printError("\"" + numberString + "\" is not a valid number. Please enter a valid number.");
                 numberString = getInput();
             }
         } while (number <= 0);
