@@ -19,8 +19,8 @@ public class HttpCommunicator {
             .registerTypeAdapter(Result.class, TypeAdapters.resultDeserializer())
             .registerTypeAdapter(ChessPiece.class, TypeAdapters.pieceDeserializer())
             .create();
-    private int lastStatusCode;
     private final String communicationError = "There was an issue contacting the server";
+    private int lastStatusCode;
 
     public Result doPost(String url, String token, Object request) throws ServerErrorException {
         String body = new Gson().toJson(request);
@@ -32,75 +32,70 @@ public class HttpCommunicator {
                     .build();
 
             return sendRequest(httpReq);
-        }
-        catch (URISyntaxException e){
+        } catch (URISyntaxException e) {
             logException(e);
             throw new ServerErrorException(communicationError, e);
         }
     }
 
     public Result doDelete(String url, String token) throws ServerErrorException {
-        try{
+        try {
             HttpRequest request = HttpRequest.newBuilder(new URI(url))
                     .DELETE()
                     .header("authorization", token)
                     .build();
 
             return sendRequest(request);
-        }
-        catch (URISyntaxException e){
+        } catch (URISyntaxException e) {
             logException(e);
             throw new ServerErrorException(communicationError, e);
         }
     }
 
     public Result doGet(String url, String token) throws ServerErrorException {
-        try{
+        try {
             HttpRequest request = HttpRequest.newBuilder(new URI(url))
                     .GET()
                     .header("authorization", token)
                     .build();
             return sendRequest(request);
-        }
-        catch (URISyntaxException e){
+        } catch (URISyntaxException e) {
             logException(e);
             throw new ServerErrorException(communicationError, e);
         }
     }
 
-    public Result doPut(String url, String token, Object request) throws ServerErrorException{
+    public Result doPut(String url, String token, Object request) throws ServerErrorException {
         String body = new Gson().toJson(request);
-        try{
+        try {
             HttpRequest httpRequest = HttpRequest.newBuilder(new URI(url))
                     .PUT(HttpRequest.BodyPublishers.ofString(body))
                     .header("Content-Type", "application/json")
                     .header("authorization", token)
                     .build();
             return sendRequest(httpRequest);
-        }
-        catch (URISyntaxException e){
+        } catch (URISyntaxException e) {
             logException(e);
             throw new ServerErrorException(communicationError, e);
         }
     }
 
-    public Result sendRequest(HttpRequest request) throws ServerErrorException{
+    public Result sendRequest(HttpRequest request) throws ServerErrorException {
         try {
             HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
             lastStatusCode = response.statusCode();
             return GSON.fromJson(response.body(), Result.class);
-        }
-        catch (InterruptedException | IOException e){
+        } catch (InterruptedException | IOException e) {
             logException(e);
             throw new ServerErrorException(communicationError, e);
         }
     }
 
-    public int getLastStatusCode(){
+    public int getLastStatusCode() {
         return lastStatusCode;
     }
 
-    private void logException(Exception e){
+    private void logException(Exception e) {
         System.err.print(e.getMessage());
         e.printStackTrace(System.err);
     }

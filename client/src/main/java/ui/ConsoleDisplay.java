@@ -8,16 +8,16 @@ import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
 
-public class ConsoleDisplay implements Display{
+public class ConsoleDisplay implements Display {
     private final PrintStream out;
     private final Scanner in;
 
-    public ConsoleDisplay(PrintStream out, Scanner in){
+    public ConsoleDisplay(PrintStream out, Scanner in) {
         this.out = out;
         this.in = in;
     }
 
-    public void title(){
+    public void title() {
         out.print(SET_BG_COLOR_BLACK);
         out.print(SET_TEXT_COLOR_GREEN);
         out.print(SET_TEXT_BOLD);
@@ -29,7 +29,7 @@ public class ConsoleDisplay implements Display{
         out.print(SET_TEXT_COLOR_BLUE);
     }
 
-    public String getInput(){
+    public String getInput() {
         out.print(SET_TEXT_COLOR_WHITE);
         String line;
         line = in.nextLine();
@@ -38,7 +38,7 @@ public class ConsoleDisplay implements Display{
 
     }
 
-    public String stringField(String prompt){
+    public String stringField(String prompt) {
         out.print(SET_TEXT_BOLD);
         out.print(prompt + ":");
         out.print(RESET_TEXT_BOLD_FAINT);
@@ -49,21 +49,20 @@ public class ConsoleDisplay implements Display{
 
     //Seems a bit funny, but I want display to keep track of the print stream, not the context.
     //Context may need to keep track of specific Messages to display to the user tho
-    public void printText(String toPrint){
+    public void printText(String toPrint) {
         out.print(RESET_TEXT_BOLD_FAINT);
         out.print(RESET_TEXT_ITALIC);
         out.print(SET_TEXT_COLOR_BLUE);
         out.print(toPrint);
     }
 
-    public int numberEntryField(String prompt){
+    public int numberEntryField(String prompt) {
         String numberString = stringField(prompt);
         int number = 0;
-        do{
-            try{
+        do {
+            try {
                 number = Integer.parseInt(numberString);
-            }
-            catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 printError("\"" + numberString + "\" is not a valid number. Please try again.");
                 numberString = getInput();
             }
@@ -71,7 +70,7 @@ public class ConsoleDisplay implements Display{
         return number;
     }
 
-    public void printError(String toPrint){
+    public void printError(String toPrint) {
         out.print(SET_TEXT_COLOR_RED);
         out.print(SET_TEXT_BOLD);
         out.println(toPrint);
@@ -79,12 +78,12 @@ public class ConsoleDisplay implements Display{
         out.print(RESET_TEXT_BOLD_FAINT);
     }
 
-    public void printGamesTable(HashMap<Integer,GameData> games){
+    public void printGamesTable(HashMap<Integer, GameData> games) {
         out.println();
         out.print(SET_TEXT_BOLD);
         printGameRow("NUMBER", "GAME NAME", "WHITE TEAM", "BLACK TEAM");
         out.print(RESET_TEXT_BOLD_FAINT);
-        for (int i = 1; i < games.size()+1; i++){
+        for (int i = 1; i < games.size() + 1; i++) {
             GameData game = games.get(i);
             printGameRow(Integer.toString(i), game.gameName(),
                     game.whiteUsername() == null ? "AVAILABLE" : game.whiteUsername(),
@@ -94,7 +93,7 @@ public class ConsoleDisplay implements Display{
         out.println();
     }
 
-    private void printGameRow(String id, String gameName, String whiteUsername, String blackUsername){
+    private void printGameRow(String id, String gameName, String whiteUsername, String blackUsername) {
         out.print(SET_TEXT_COLOR_MAGENTA);
         out.print(id + " ");
         out.print(SET_TEXT_COLOR_YELLOW);

@@ -1,5 +1,6 @@
 package server;
 
+import com.google.gson.Gson;
 import dataaccess.*;
 import datamodels.AuthData;
 import handlers.*;
@@ -7,7 +8,6 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.UnauthorizedResponse;
 import response.Result;
-import com.google.gson.Gson;
 
 
 public class Server {
@@ -16,14 +16,13 @@ public class Server {
     AuthDAO authDB = new MemAuthDAO();
     GameDAO gameDB = new MemGameDAO();
 
-    public Server(){
-        try{
+    public Server() {
+        try {
             DatabaseManager.createDatabase();
             userDB = new SQLUserDAO();
             authDB = new SQLAuthDAO();
             gameDB = new SQLGameDAO();
-        }
-        catch (DataAccessException e){
+        } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }
     }
@@ -31,9 +30,8 @@ public class Server {
     public int run(int desiredPort) {
         javalin.start(desiredPort);
 
-
         // Register your endpoints and handle exceptions here.
-        javalin.delete("/db", new ClearHandler(userDB,authDB,gameDB));
+        javalin.delete("/db", new ClearHandler(userDB, authDB, gameDB));
         javalin.post("/user", new RegisterHandler(userDB, authDB));
         javalin.post("/session", new LoginHandler(userDB, authDB));
         javalin.delete("/session", new LogoutHandler(authDB));
@@ -42,7 +40,7 @@ public class Server {
         javalin.post("/game", new CreateGameHandler(gameDB));
         javalin.put("/game", new JoinGameHandler(gameDB, authDB));
 
-        javalin.exception(DataAccessException.class, (e, ctx)->{
+        javalin.exception(DataAccessException.class, (e, ctx) -> {
             e.printStackTrace(System.err);
             ctx.status(500);
             Result result = new Result();
@@ -50,7 +48,7 @@ public class Server {
             ctx.json(new Gson().toJson(result));
         });
 
-        javalin.exception(UnauthorizedResponse.class, (e, ctx)->{
+        javalin.exception(UnauthorizedResponse.class, (e, ctx) -> {
             ctx.status(401);
             Result result = new Result();
             result.setMessage(e.getMessage());
@@ -63,10 +61,10 @@ public class Server {
         javalin.stop();
     }
 
-    public void authCheck(Context context) throws DataAccessException{
+    public void authCheck(Context context) throws DataAccessException {
         String token = context.header("Authorization");
         AuthData auth = authDB.getAuth(token);
-        if (auth == null){
+        if (auth == null) {
             throw new UnauthorizedResponse("Error: unauthorized access");
         }
     }

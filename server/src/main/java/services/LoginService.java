@@ -14,7 +14,7 @@ public class LoginService {
     private final UserDAO userDB;
     private final AuthDAO authDB;
 
-    public LoginService (UserDAO user, AuthDAO auth){
+    public LoginService(UserDAO user, AuthDAO auth) {
         userDB = user;
         authDB = auth;
     }
@@ -23,7 +23,7 @@ public class LoginService {
         UserData user = userDB.getUser(request.getUsername());
         Result unauthorized = new Result();
         unauthorized.setMessage("Error: unauthorized access");
-        if (user == null || !BCrypt.checkpw(request.getPassword(), user.password())){
+        if (user == null || !BCrypt.checkpw(request.getPassword(), user.password())) {
             return unauthorized;
         }
         AuthData newAuth = authDB.insertAuth(request.getUsername());

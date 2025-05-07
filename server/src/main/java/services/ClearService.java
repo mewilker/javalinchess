@@ -10,7 +10,7 @@ public class ClearService {
     private final AuthDAO authDB;
     private final GameDAO gameDB;
 
-    public ClearService(UserDAO user, AuthDAO auth, GameDAO game){
+    public ClearService(UserDAO user, AuthDAO auth, GameDAO game) {
         userDB = user;
         authDB = auth;
         gameDB = game;

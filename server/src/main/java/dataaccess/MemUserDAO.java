@@ -4,7 +4,7 @@ import datamodels.UserData;
 
 import java.util.HashMap;
 
-public class MemUserDAO implements UserDAO{
+public class MemUserDAO implements UserDAO {
     public static final HashMap<String, UserData> USER_DB = new HashMap<>();
 
     @Override

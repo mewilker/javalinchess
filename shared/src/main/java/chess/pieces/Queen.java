@@ -11,7 +11,7 @@ public class Queen extends ChessPiece {
     }
 
     @Override
-    public Collection<ChessMove> pieceMoves (ChessBoard board, ChessPosition myPosition){
+    public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         HashSet<ChessMove> moves = new HashSet<>();
         moves.addAll(moveInDirection(board, myPosition, VerticalDirection.UP, null));
         moves.addAll(moveInDirection(board, myPosition, null, HorizontalDirection.LEFT));
@@ -25,7 +25,7 @@ public class Queen extends ChessPiece {
     }
 
     @Override
-    public String toString (){
+    public String toString() {
         return getTeamColor() == ChessGame.TeamColor.WHITE ? "wq" : "bq";
     }
 }

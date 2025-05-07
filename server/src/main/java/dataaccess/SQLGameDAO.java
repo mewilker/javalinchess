@@ -10,11 +10,12 @@ import serialization.TypeAdapters;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class SQLGameDAO implements GameDAO{
+public class SQLGameDAO implements GameDAO {
     private final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(ChessPiece.class, TypeAdapters.pieceDeserializer())
             .create();
-    public SQLGameDAO() throws DataAccessException{
+
+    public SQLGameDAO() throws DataAccessException {
         String statement = """
                 CREATE TABLE IF NOT EXISTS games (
                 gameID INT NOT NULL AUTO_INCREMENT,
@@ -26,10 +27,9 @@ public class SQLGameDAO implements GameDAO{
                 )
                 """;
         try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(statement)){
+             PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DataAccessException("Could not initialize auth table", e);
         }
     }
@@ -37,21 +37,20 @@ public class SQLGameDAO implements GameDAO{
     @Override
     public int insertGame(String gameName) throws DataAccessException {
         String statement = "INSERT INTO games (name, game) VALUES (?, ?)";
-        try(Connection connection = DatabaseManager.getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS)){
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, gameName);
             preparedStatement.setString(2, new Gson().toJson(new ChessGame()));
 
             preparedStatement.executeUpdate();
 
-            try(ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+            try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if (resultSet.next()) {
                     return resultSet.getInt(1);
                 }
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DataAccessException("Error inserting game", e);
         }
         throw new DataAccessException("Could not get an ID");
@@ -63,8 +62,8 @@ public class SQLGameDAO implements GameDAO{
         String statement = "SELECT * FROM games";
         try (Connection connection = DatabaseManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(statement);
-             ResultSet resultSet = preparedStatement.executeQuery()){
-            while (resultSet.next()){
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
                 GameData data = new GameData(
                         resultSet.getInt("gameID"),
                         resultSet.getString("name"),
@@ -74,8 +73,7 @@ public class SQLGameDAO implements GameDAO{
                 );
                 games.add(data);
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DataAccessException("Error getting games", e);
         }
         return games;
@@ -84,15 +82,14 @@ public class SQLGameDAO implements GameDAO{
     @Override
     public void updateGame(GameData data) throws DataAccessException {
         String statement = "UPDATE games SET whiteUser = ?, blackUser = ?, game = ? WHERE gameID = ?";
-        try(Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(statement)){
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
             preparedStatement.setString(1, data.whiteUsername());
             preparedStatement.setString(2, data.blackUsername());
             preparedStatement.setString(3, new Gson().toJson(data.game()));
             preparedStatement.setInt(4, data.gameID());
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DataAccessException("Could not update game", e);
         }
     }
@@ -100,11 +97,10 @@ public class SQLGameDAO implements GameDAO{
     @Override
     public void clear() throws DataAccessException {
         String statement = "TRUNCATE games";
-        try(Connection connection = DatabaseManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DataAccessException("Could not clear games", e);
         }
     }
@@ -113,21 +109,20 @@ public class SQLGameDAO implements GameDAO{
     public GameData getGame(int gameID) throws DataAccessException {
         String statement = "SELECT * FROM games WHERE gameID = ?";
         try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(statement)){
+             PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
             preparedStatement.setInt(1, gameID);
-             try(ResultSet resultSet = preparedStatement.executeQuery()) {
-                 if (resultSet.next()) {
-                     return new GameData(
-                             resultSet.getInt("gameID"),
-                             resultSet.getString("name"),
-                             resultSet.getString("whiteUser"),
-                             resultSet.getString("blackUser"),
-                             GSON.fromJson(resultSet.getString("game"), ChessGame.class)
-                     );
-                 }
-             }
-        }
-        catch (SQLException e){
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new GameData(
+                            resultSet.getInt("gameID"),
+                            resultSet.getString("name"),
+                            resultSet.getString("whiteUser"),
+                            resultSet.getString("blackUser"),
+                            GSON.fromJson(resultSet.getString("game"), ChessGame.class)
+                    );
+                }
+            }
+        } catch (SQLException e) {
             throw new DataAccessException("Error getting game", e);
         }
         return null;

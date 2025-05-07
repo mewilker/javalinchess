@@ -11,7 +11,8 @@ import services.ListGamesService;
 
 public class ListGamesHandler implements Handler {
     private final ListGamesService service;
-    public ListGamesHandler(GameDAO gameDAO){
+
+    public ListGamesHandler(GameDAO gameDAO) {
         service = new ListGamesService(gameDAO);
     }
 

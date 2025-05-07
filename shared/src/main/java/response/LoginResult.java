@@ -1,19 +1,19 @@
 package response;
 
-public class LoginResult extends Result{
+public class LoginResult extends Result {
     private final String username;
     private final String authToken;
 
-    public LoginResult(String authToken, String username){
+    public LoginResult(String authToken, String username) {
         this.authToken = authToken;
         this.username = username;
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return username;
     }
 
-    public String getAuthToken(){
+    public String getAuthToken() {
         return authToken;
     }
 }

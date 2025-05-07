@@ -12,12 +12,12 @@ import services.ClearService;
 public class ClearHandler implements Handler {
     private final ClearService service;
 
-    public ClearHandler(UserDAO user, AuthDAO auth, GameDAO game){
+    public ClearHandler(UserDAO user, AuthDAO auth, GameDAO game) {
         service = new ClearService(user, auth, game);
     }
 
     @Override
-    public void handle(@NotNull Context context)throws DataAccessException{
+    public void handle(@NotNull Context context) throws DataAccessException {
         service.clear();
         context.status(200);
         context.json("{}");

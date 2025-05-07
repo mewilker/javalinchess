@@ -13,36 +13,36 @@ public class King extends ChessPiece {
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         HashSet<ChessMove> moves = new HashSet<>();
-        ChessPosition inspect = new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()+1);
-        if (canTake(board, inspect)){
+        ChessPosition inspect = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1);
+        if (canTake(board, inspect)) {
             moves.add(new ChessMove(myPosition, inspect, null));
         }
-        inspect = new ChessPosition(myPosition.getRow()+1, myPosition.getColumn()-1);
-        if (canTake(board, inspect)){
+        inspect = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1);
+        if (canTake(board, inspect)) {
             moves.add(new ChessMove(myPosition, inspect, null));
         }
-        inspect = new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()+1);
-        if (canTake(board, inspect)){
+        inspect = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 1);
+        if (canTake(board, inspect)) {
             moves.add(new ChessMove(myPosition, inspect, null));
         }
-        inspect = new ChessPosition(myPosition.getRow()-1, myPosition.getColumn()-1);
-        if (canTake(board, inspect)){
+        inspect = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 1);
+        if (canTake(board, inspect)) {
             moves.add(new ChessMove(myPosition, inspect, null));
         }
-        inspect = new ChessPosition(myPosition.getRow()+1, myPosition.getColumn());
-        if (canTake(board, inspect)){
+        inspect = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
+        if (canTake(board, inspect)) {
             moves.add(new ChessMove(myPosition, inspect, null));
         }
-        inspect = new ChessPosition(myPosition.getRow(), myPosition.getColumn()-1);
-        if (canTake(board, inspect)){
+        inspect = new ChessPosition(myPosition.getRow(), myPosition.getColumn() - 1);
+        if (canTake(board, inspect)) {
             moves.add(new ChessMove(myPosition, inspect, null));
         }
-        inspect = new ChessPosition(myPosition.getRow()-1, myPosition.getColumn());
-        if (canTake(board, inspect)){
+        inspect = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
+        if (canTake(board, inspect)) {
             moves.add(new ChessMove(myPosition, inspect, null));
         }
-        inspect = new ChessPosition(myPosition.getRow(), myPosition.getColumn()+1);
-        if (canTake(board, inspect)){
+        inspect = new ChessPosition(myPosition.getRow(), myPosition.getColumn() + 1);
+        if (canTake(board, inspect)) {
             moves.add(new ChessMove(myPosition, inspect, null));
         }
         //TODO: there has got to be a prettier way to populate this
@@ -50,7 +50,7 @@ public class King extends ChessPiece {
     }
 
     @Override
-    public String toString (){
+    public String toString() {
         return getTeamColor() == ChessGame.TeamColor.WHITE ? "wk" : "bk";
     }
 }

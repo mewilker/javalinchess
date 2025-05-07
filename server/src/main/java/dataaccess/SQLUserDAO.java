@@ -18,11 +18,10 @@ public class SQLUserDAO implements UserDAO {
                     PRIMARY KEY (username)
                 )
                 """;
-        try(Connection connection = DatabaseManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DataAccessException("Could not create users table", e);
         }
     }
@@ -31,13 +30,12 @@ public class SQLUserDAO implements UserDAO {
     public void insertUser(UserData user) throws DataAccessException {
         String statement = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
         try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(statement)){
+             PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
             preparedStatement.setString(1, user.username());
             preparedStatement.setString(2, user.password());
             preparedStatement.setString(3, user.email());
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DataAccessException("Could not insert into users", e);
         }
     }
@@ -46,16 +44,15 @@ public class SQLUserDAO implements UserDAO {
     public UserData getUser(String username) throws DataAccessException {
         String statement = "SELECT * FROM users WHERE username = ?";
         try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(statement)){
+             PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
             preparedStatement.setString(1, username);
-            try(ResultSet resultSet = preparedStatement.executeQuery()){
-                if (resultSet.next()){
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
                     return new UserData(resultSet.getString("username"),
                             resultSet.getString("password"), resultSet.getString("email"));
                 }
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DataAccessException("Error getting user", e);
         }
         return null;
@@ -64,11 +61,10 @@ public class SQLUserDAO implements UserDAO {
     @Override
     public void clear() throws DataAccessException {
         String statement = "TRUNCATE users";
-        try(Connection connection = DatabaseManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
             preparedStatement.executeUpdate();
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DataAccessException("Could not clear users", e);
         }
     }

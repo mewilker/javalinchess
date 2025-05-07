@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class TypeAdapters {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Result first = new ListGamesResult(new ArrayList<>());
         //first.setMessage("I have a result");
         String json = new Gson().toJson(first);
@@ -22,7 +22,7 @@ public class TypeAdapters {
         System.out.println(finish.getGames());
     }
 
-    public static JsonDeserializer<ChessPiece> pieceDeserializer(){
+    public static JsonDeserializer<ChessPiece> pieceDeserializer() {
         return (jsonElement, type, context) -> {
             JsonObject obj = jsonElement.getAsJsonObject();
             JsonPrimitive prim = obj.getAsJsonPrimitive("type");
@@ -42,23 +42,23 @@ public class TypeAdapters {
     }
 
     //TODO: this is not the prettiest, most maintainable way to determine result type. Fix it.
-    public static JsonDeserializer<Result> resultDeserializer(){
+    public static JsonDeserializer<Result> resultDeserializer() {
         return (jsonElement, type, context) -> {
             JsonObject obj = jsonElement.getAsJsonObject();
             JsonPrimitive prim = obj.getAsJsonPrimitive("message");
-            if (prim != null){
+            if (prim != null) {
                 return new Gson().fromJson(jsonElement, Result.class);
             }
             prim = obj.getAsJsonPrimitive("authToken");
-            if (prim != null){
+            if (prim != null) {
                 return context.deserialize(jsonElement, LoginResult.class);
             }
             prim = obj.getAsJsonPrimitive("gameID");
-            if (prim != null){
+            if (prim != null) {
                 return context.deserialize(jsonElement, CreateGameResult.class);
             }
             JsonArray array = obj.getAsJsonArray("games");
-            if (array != null){
+            if (array != null) {
                 return context.deserialize(jsonElement, ListGamesResult.class);
             }
             return null;

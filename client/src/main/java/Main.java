@@ -1,4 +1,5 @@
-import chess.*;
+import chess.ChessGame;
+import chess.ChessPiece;
 import context.ContextManager;
 import facade.ServerFacade;
 import ui.ConsoleDisplay;
@@ -17,7 +18,7 @@ public class Main {
         File file = new File("log.txt");
         PrintStream err = new PrintStream(file);
         System.setErr(err);
-        try(Scanner s = new Scanner(System.in)){
+        try (Scanner s = new Scanner(System.in)) {
             ConsoleDisplay display = new ConsoleDisplay(System.out, s);
             display.title();
             new ContextManager(display, server).run();

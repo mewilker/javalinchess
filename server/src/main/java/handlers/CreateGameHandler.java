@@ -12,7 +12,8 @@ import services.CreateGameService;
 
 public class CreateGameHandler implements Handler {
     private final CreateGameService service;
-    public CreateGameHandler(GameDAO gameDAO){
+
+    public CreateGameHandler(GameDAO gameDAO) {
         service = new CreateGameService(gameDAO);
     }
 
@@ -21,7 +22,7 @@ public class CreateGameHandler implements Handler {
     public void handle(@NotNull Context context) throws DataAccessException {
         CreateGameRequest request = new Gson().fromJson(context.body(), CreateGameRequest.class);
         Result result = new Result();
-        if (request.getGameName() == null){
+        if (request.getGameName() == null) {
             context.status(400);
             result.setMessage("Error: bad request");
             context.json(new Gson().toJson(result));

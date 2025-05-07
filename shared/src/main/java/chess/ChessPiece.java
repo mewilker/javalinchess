@@ -22,18 +22,6 @@ public class ChessPiece {
     }
 
     /**
-     * The various different chess piece options
-     */
-    public enum PieceType {
-        KING,
-        QUEEN,
-        BISHOP,
-        KNIGHT,
-        ROOK,
-        PAWN
-    }
-
-    /**
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
@@ -65,18 +53,8 @@ public class ChessPiece {
         };
     }
 
-    protected enum VerticalDirection{
-        UP,
-        DOWN
-    }
-
-    protected enum HorizontalDirection{
-        LEFT,
-        RIGHT
-    }
-
     protected HashSet<ChessMove> moveInDirection(ChessBoard board, ChessPosition position, VerticalDirection vertical,
-                                                 HorizontalDirection horizontal){
+                                                 HorizontalDirection horizontal) {
         HashSet<ChessMove> moves = new HashSet<>();
         int upCount;
         int rightCount;
@@ -84,13 +62,11 @@ public class ChessPiece {
         while (board.isOnBoard(inspect)) {
             if (!inspect.equals(position)) {
                 ChessPiece takePiece = board.getPiece(inspect);
-                if (takePiece == null){
-                    moves.add(new ChessMove(position, inspect,null));
-                }
-                else if (takePiece.getTeamColor() == this.color){
+                if (takePiece == null) {
+                    moves.add(new ChessMove(position, inspect, null));
+                } else if (takePiece.getTeamColor() == this.color) {
                     return moves;
-                }
-                else{
+                } else {
                     moves.add(new ChessMove(position, inspect, null));
                     return moves;
                 }
@@ -105,18 +81,18 @@ public class ChessPiece {
                 case LEFT -> rightCount = -1;
                 case null, default -> rightCount = 0;
             }
-            inspect = new ChessPosition(inspect.getRow()+upCount, inspect.getColumn()+rightCount);
+            inspect = new ChessPosition(inspect.getRow() + upCount, inspect.getColumn() + rightCount);
         }
 
         return moves;
     }
 
-    protected boolean canTake(ChessBoard board, ChessPosition toTake){
-        if (!board.isOnBoard(toTake)){
+    protected boolean canTake(ChessBoard board, ChessPosition toTake) {
+        if (!board.isOnBoard(toTake)) {
             return false;
         }
         ChessPiece piece = board.getPiece(toTake);
-        if (piece == null || piece.getTeamColor() != color){
+        if (piece == null || piece.getTeamColor() != color) {
             return true;
         }
         return false;
@@ -135,7 +111,7 @@ public class ChessPiece {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return switch (type) {
             case KING -> new King(color).toString();
             case PAWN -> new Pawn(color).toString();
@@ -144,5 +120,27 @@ public class ChessPiece {
             case BISHOP -> new Bishop(color).toString();
             case KNIGHT -> new Knight(color).toString();
         };
+    }
+
+    /**
+     * The various different chess piece options
+     */
+    public enum PieceType {
+        KING,
+        QUEEN,
+        BISHOP,
+        KNIGHT,
+        ROOK,
+        PAWN
+    }
+
+    protected enum VerticalDirection {
+        UP,
+        DOWN
+    }
+
+    protected enum HorizontalDirection {
+        LEFT,
+        RIGHT
     }
 }

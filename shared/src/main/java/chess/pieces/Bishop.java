@@ -7,7 +7,7 @@ import java.util.HashSet;
 
 public class Bishop extends ChessPiece {
 
-    public Bishop(ChessGame.TeamColor color){
+    public Bishop(ChessGame.TeamColor color) {
         super(color, PieceType.BISHOP);
     }
 

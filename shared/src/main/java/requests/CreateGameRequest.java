@@ -4,11 +4,11 @@ public class CreateGameRequest {
 
     private final String gameName;
 
-    public CreateGameRequest (String gameName, String authToken){
+    public CreateGameRequest(String gameName, String authToken) {
         this.gameName = gameName;
     }
 
-    public String getGameName(){
+    public String getGameName() {
         return gameName;
     }
 

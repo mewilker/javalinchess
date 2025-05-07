@@ -1,6 +1,6 @@
 package requests;
 
-public class RegisterRequest extends LoginRequest{
+public class RegisterRequest extends LoginRequest {
     private final String email;
 
     public RegisterRequest(String username, String password, String email) {
@@ -8,7 +8,7 @@ public class RegisterRequest extends LoginRequest{
         this.email = email;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email;
     }
 }

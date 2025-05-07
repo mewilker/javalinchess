@@ -10,14 +10,14 @@ public class LogoutService {
 
     private final AuthDAO authDB;
 
-    public LogoutService(AuthDAO authDAO){
+    public LogoutService(AuthDAO authDAO) {
         authDB = authDAO;
     }
 
-    public Result logout (LogoutRequest request) throws DataAccessException {
+    public Result logout(LogoutRequest request) throws DataAccessException {
         Result result = new Result();
         AuthData auth = authDB.getAuth(request.getAuthToken());
-        if (auth != null){
+        if (auth != null) {
             authDB.deleteAuth(request.getAuthToken());
             return result;
         }

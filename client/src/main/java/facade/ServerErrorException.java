@@ -1,11 +1,11 @@
 package facade;
 
-public class ServerErrorException extends Exception{
-    public ServerErrorException(String message){
+public class ServerErrorException extends Exception {
+    public ServerErrorException(String message) {
         super(message);
     }
 
-    public ServerErrorException(String message, Throwable ex){
+    public ServerErrorException(String message, Throwable ex) {
         super(message, ex);
     }
 }

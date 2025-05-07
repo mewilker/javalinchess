@@ -7,14 +7,14 @@ import java.util.HashSet;
 
 public class Pawn extends ChessPiece {
     public Pawn(ChessGame.TeamColor pieceColor) {
-        super(pieceColor,PieceType.PAWN);
+        super(pieceColor, PieceType.PAWN);
     }
 
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         HashSet<ChessMove> moves = new HashSet<>();
         ChessMove move = forwardTwo(board, myPosition);
-        if (move != null){
+        if (move != null) {
             moves.add(move);
         }
         moves.addAll(forwardOne(board, myPosition));
@@ -22,7 +22,7 @@ public class Pawn extends ChessPiece {
         return moves;
     }
 
-    private ChessMove forwardTwo(ChessBoard board, ChessPosition myPosition){
+    private ChessMove forwardTwo(ChessBoard board, ChessPosition myPosition) {
         if (getTeamColor() == ChessGame.TeamColor.WHITE) {
             if (myPosition.getRow() == 2) {
                 ChessPosition inFront = new ChessPosition(3, myPosition.getColumn());
@@ -32,7 +32,7 @@ public class Pawn extends ChessPiece {
                 }
             }
         }
-        if (getTeamColor() == ChessGame.TeamColor.BLACK){
+        if (getTeamColor() == ChessGame.TeamColor.BLACK) {
             if (myPosition.getRow() == 7) {
                 ChessPosition inFront = new ChessPosition(6, myPosition.getColumn());
                 ChessPosition inspect = new ChessPosition(5, myPosition.getColumn());
@@ -44,13 +44,12 @@ public class Pawn extends ChessPiece {
         return null;
     }
 
-    private HashSet<ChessMove> forwardOne(ChessBoard board, ChessPosition myPosition){
+    private HashSet<ChessMove> forwardOne(ChessBoard board, ChessPosition myPosition) {
         HashSet<ChessMove> moves = new HashSet<>();
         ChessPosition inspect;
         if (getTeamColor() == ChessGame.TeamColor.WHITE) {
             inspect = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
-        }
-        else{
+        } else {
             inspect = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
         }
         if (board.getPiece(inspect) == null) {
@@ -59,21 +58,19 @@ public class Pawn extends ChessPiece {
         return moves;
     }
 
-    private HashSet<ChessMove> captures(ChessBoard board, ChessPosition myPosition){
+    private HashSet<ChessMove> captures(ChessBoard board, ChessPosition myPosition) {
         HashSet<ChessMove> moves = new HashSet<>();
         ChessPosition inspect;
         if (getTeamColor() == ChessGame.TeamColor.WHITE) {
             inspect = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
-        }
-        else{
-            inspect = new ChessPosition(myPosition.getRow()-1, myPosition.getColumn());
+        } else {
+            inspect = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
         }
         for (int i = 0; i < 2; i++) {
             if (i == 0) {
-                inspect = new ChessPosition(inspect.getRow(), myPosition.getColumn()-1);
-            }
-            else {
-                inspect = new ChessPosition(inspect.getRow(), myPosition.getColumn()+1);
+                inspect = new ChessPosition(inspect.getRow(), myPosition.getColumn() - 1);
+            } else {
+                inspect = new ChessPosition(inspect.getRow(), myPosition.getColumn() + 1);
             }
             if (board.isOnBoard(inspect)) {
                 ChessPiece capture = board.getPiece(inspect);
@@ -85,13 +82,12 @@ public class Pawn extends ChessPiece {
         return moves;
     }
 
-    private HashSet<ChessMove> checkPromotes(ChessPosition myPosition, ChessPosition toMove){
+    private HashSet<ChessMove> checkPromotes(ChessPosition myPosition, ChessPosition toMove) {
         HashSet<ChessMove> promotions = new HashSet<>();
         int comp;
         if (getTeamColor() == ChessGame.TeamColor.WHITE) {
             comp = 8;
-        }
-        else{
+        } else {
             comp = 1;
         }
         if (toMove.getRow() == comp) {
@@ -99,15 +95,14 @@ public class Pawn extends ChessPiece {
             promotions.add(new ChessMove(myPosition, toMove, PieceType.BISHOP));
             promotions.add(new ChessMove(myPosition, toMove, PieceType.KNIGHT));
             promotions.add(new ChessMove(myPosition, toMove, PieceType.ROOK));
-        }
-        else{
+        } else {
             promotions.add(new ChessMove(myPosition, toMove, null));
         }
         return promotions;
     }
 
     @Override
-    public String toString (){
+    public String toString() {
         return getTeamColor() == ChessGame.TeamColor.WHITE ? "wp" : "bp";
     }
 }

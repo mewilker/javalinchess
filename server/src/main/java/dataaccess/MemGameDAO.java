@@ -6,7 +6,7 @@ import datamodels.GameData;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MemGameDAO implements GameDAO{
+public class MemGameDAO implements GameDAO {
     private static final HashMap<Integer, GameData> GAME_DB = new HashMap<>();
     private static int nextGameID = 1;
 
@@ -14,7 +14,7 @@ public class MemGameDAO implements GameDAO{
     public int insertGame(String gameName) {
         int id = nextGameID;
         nextGameID++;
-        GAME_DB.put(id, new GameData(id,gameName, null, null, new ChessGame()));
+        GAME_DB.put(id, new GameData(id, gameName, null, null, new ChessGame()));
         return id;
     }
 
@@ -23,7 +23,7 @@ public class MemGameDAO implements GameDAO{
         return new ArrayList<>(GAME_DB.values());
     }
 
-    public GameData getGame(int gameID){
+    public GameData getGame(int gameID) {
         return GAME_DB.get(gameID);
     }
 

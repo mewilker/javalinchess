@@ -13,25 +13,25 @@ import services.RegisterService;
 
 public class RegisterHandler implements Handler {
     private final RegisterService service;
-    public RegisterHandler(UserDAO user, AuthDAO auth){
+
+    public RegisterHandler(UserDAO user, AuthDAO auth) {
         service = new RegisterService(user, auth);
     }
 
     @Override
-    public void handle(@NotNull Context context) throws DataAccessException{
+    public void handle(@NotNull Context context) throws DataAccessException {
         RegisterRequest request = new Gson().fromJson(context.body(), RegisterRequest.class);
         Result result = new Result();
-        if (request.getEmail() == null || request.getPassword() == null || request.getUsername()==null){
+        if (request.getEmail() == null || request.getPassword() == null || request.getUsername() == null) {
             context.status(400);
             result.setMessage("Error: Bad Request");
             context.json(new Gson().toJson(result));
             return;
         }
         result = service.register(request);
-        if(result.getMessage() != null){
+        if (result.getMessage() != null) {
             context.status(403);
-        }
-        else{
+        } else {
             context.status(200);
         }
         context.json(new Gson().toJson(result));

@@ -4,7 +4,7 @@ import datamodels.AuthData;
 
 import java.util.HashMap;
 
-public class MemAuthDAO implements AuthDAO{
+public class MemAuthDAO implements AuthDAO {
     private static final HashMap<String, AuthData> AUTH_DB = new HashMap<>();
 
     @Override

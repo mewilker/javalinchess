@@ -4,10 +4,11 @@ import facade.ServerErrorException;
 import facade.ServerFacade;
 import ui.Display;
 
-public class PreLogin implements Context{
+public class PreLogin implements Context {
     private final Display display;
     private final ServerFacade server;
-    public PreLogin(Display display, ServerFacade server){
+
+    public PreLogin(Display display, ServerFacade server) {
         this.display = display;
         this.server = server;
     }
@@ -21,11 +22,11 @@ public class PreLogin implements Context{
         };
     }
 
-    private Context register(){
+    private Context register() {
         String username = display.stringField("Username");
         String password = display.stringField("Password");
         String email = display.stringField("Email");
-        try{
+        try {
             server.register(username, password, email);
             return new PostLogin(server, display);
         } catch (ServerErrorException e) {
@@ -34,19 +35,19 @@ public class PreLogin implements Context{
         return this;
     }
 
-    private Context login(){
+    private Context login() {
         String username = display.stringField("Username");
         String password = display.stringField("Password");
-        try{
+        try {
             server.login(username, password);
             return new PostLogin(server, display);
-        } catch (ServerErrorException e){
+        } catch (ServerErrorException e) {
             display.printError(e.getMessage());
         }
         return this;
     }
 
-    private Context menu(){
+    private Context menu() {
         String menu = """
                 
                 ****OPTIONS****

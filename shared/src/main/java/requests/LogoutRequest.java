@@ -3,11 +3,11 @@ package requests;
 public class LogoutRequest {
     private final String authToken;
 
-    public LogoutRequest(String authorization){
+    public LogoutRequest(String authorization) {
         authToken = authorization;
     }
 
-    public String getAuthToken(){
+    public String getAuthToken() {
         return authToken;
     }
 }

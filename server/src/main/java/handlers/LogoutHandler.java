@@ -12,18 +12,18 @@ import services.LogoutService;
 
 public class LogoutHandler implements Handler {
     private final LogoutService service;
-    public LogoutHandler(AuthDAO authDAO){
+
+    public LogoutHandler(AuthDAO authDAO) {
         service = new LogoutService(authDAO);
     }
-    
+
     @Override
     public void handle(@NotNull Context context) throws DataAccessException {
         LogoutRequest request = new LogoutRequest(context.header("authorization"));
         Result result = service.logout(request);
-        if (result.getMessage() != null){
+        if (result.getMessage() != null) {
             context.status(401);
-        }
-        else {
+        } else {
             context.status(200);
         }
         context.json(new Gson().toJson(result));

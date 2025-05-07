@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ListGamesService {
     private final GameDAO gameDB;
 
-    public ListGamesService(GameDAO gameDAO){
+    public ListGamesService(GameDAO gameDAO) {
         gameDB = gameDAO;
     }
 

@@ -7,25 +7,25 @@ public class JoinGameRequest {
     private final int gameID;
     private String authToken;
 
-    public JoinGameRequest (ChessGame.TeamColor color, int id, String token){
+    public JoinGameRequest(ChessGame.TeamColor color, int id, String token) {
         playerColor = color;
         gameID = id;
         authToken = token;
     }
 
-    public ChessGame.TeamColor getPlayerColor(){
+    public ChessGame.TeamColor getPlayerColor() {
         return playerColor;
     }
 
-    public int getGameID(){
+    public int getGameID() {
         return gameID;
     }
 
-    public String getAuthToken(){
+    public String getAuthToken() {
         return authToken;
     }
 
-    public void setAuthToken(String token){
+    public void setAuthToken(String token) {
         authToken = token;
     }
 

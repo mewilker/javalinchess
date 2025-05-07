@@ -13,15 +13,16 @@ import services.LoginService;
 
 public class LoginHandler implements Handler {
     private final LoginService service;
-    public LoginHandler(UserDAO userDAO, AuthDAO authDAO){
+
+    public LoginHandler(UserDAO userDAO, AuthDAO authDAO) {
         service = new LoginService(userDAO, authDAO);
     }
 
     @Override
-    public void handle(@NotNull Context context) throws DataAccessException{
+    public void handle(@NotNull Context context) throws DataAccessException {
         LoginRequest request = new Gson().fromJson(context.body(), LoginRequest.class);
         Result result = new Result();
-        if (request.getPassword()==null || request.getUsername() == null) {
+        if (request.getPassword() == null || request.getUsername() == null) {
             context.status(400);
             result.setMessage("Error: bad request");
             context.json(new Gson().toJson(result));
@@ -31,8 +32,7 @@ public class LoginHandler implements Handler {
         if (result.getMessage() != null) {
             context.status(401);
             result.setMessage("Error: unauthorized access");
-        }
-        else{
+        } else {
             context.status(200);
         }
         context.json(new Gson().toJson(result));
