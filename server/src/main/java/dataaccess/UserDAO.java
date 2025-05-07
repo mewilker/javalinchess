@@ -3,7 +3,7 @@ package dataaccess;
 import datamodels.UserData;
 
 public interface UserDAO {
-    public void insertUser(UserData user) throws DataAccessException;
+    void insertUser(UserData user) throws DataAccessException;
 
     /**
      *
@@ -11,6 +11,6 @@ public interface UserDAO {
      * @return UserData if found, null if none
      * @throws DataAccessException in cases of SQL issues
      */
-    public UserData getUser(String username) throws DataAccessException;
-    public void clear() throws DataAccessException;
+    UserData getUser(String username) throws DataAccessException;
+    void clear() throws DataAccessException;
 }

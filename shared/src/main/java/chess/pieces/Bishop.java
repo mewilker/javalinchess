@@ -23,6 +23,6 @@ public class Bishop extends ChessPiece {
 
     @Override
     public String toString() {
-        return color == ChessGame.TeamColor.WHITE ? "wb" : "bb";
+        return getTeamColor() == ChessGame.TeamColor.WHITE ? "wb" : "bb";
     }
 }

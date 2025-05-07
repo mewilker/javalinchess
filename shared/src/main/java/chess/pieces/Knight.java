@@ -53,6 +53,6 @@ public class Knight extends ChessPiece {
 
     @Override
     public String toString (){
-        return color == ChessGame.TeamColor.WHITE ? "wn" : "bn";
+        return getTeamColor() == ChessGame.TeamColor.WHITE ? "wn" : "bn";
     }
 }

@@ -51,6 +51,6 @@ public class King extends ChessPiece {
 
     @Override
     public String toString (){
-        return color == ChessGame.TeamColor.WHITE ? "wk" : "bk";
+        return getTeamColor() == ChessGame.TeamColor.WHITE ? "wk" : "bk";
     }
 }

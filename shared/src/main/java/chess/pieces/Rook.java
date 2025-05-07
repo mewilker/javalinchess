@@ -22,6 +22,6 @@ public class Rook extends ChessPiece {
 
     @Override
     public String toString (){
-        return color == ChessGame.TeamColor.WHITE ? "wr" : "br";
+        return getTeamColor() == ChessGame.TeamColor.WHITE ? "wr" : "br";
     }
 }

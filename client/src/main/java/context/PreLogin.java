@@ -5,8 +5,8 @@ import facade.ServerFacade;
 import ui.Display;
 
 public class PreLogin implements Context{
-    Display display;
-    ServerFacade server;
+    private final Display display;
+    private final ServerFacade server;
     public PreLogin(Display display, ServerFacade server){
         this.display = display;
         this.server = server;

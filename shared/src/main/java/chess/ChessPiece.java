@@ -13,8 +13,8 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessPiece {
-    protected ChessGame.TeamColor color;
-    protected PieceType type;
+    private final ChessGame.TeamColor color;
+    private final PieceType type;
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         color = pieceColor;
@@ -55,7 +55,6 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        HashSet<ChessMove> moves = new HashSet<>();
         return switch (type) {
             case BISHOP -> new Bishop(color).pieceMoves(board, myPosition);
             case ROOK -> new Rook(color).pieceMoves(board, myPosition);
@@ -125,19 +124,9 @@ public class ChessPiece {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null){
-            return false;
-        }
-        Class<?> clazz = o.getClass();
-        if (clazz == Bishop.class || clazz == King.class || clazz == Knight.class || clazz == Pawn.class ||
-        clazz == Queen.class || clazz == Rook.class || clazz == getClass()){
-            ChessPiece that = (ChessPiece) o;
-            return color == that.color && type == that.type;
-        }
-        return false;
+        if (this == o) return true;
+        if (!(o instanceof ChessPiece piece)) return false;
+        return color == piece.color && type == piece.type;
     }
 
     @Override
@@ -154,7 +143,6 @@ public class ChessPiece {
             case QUEEN -> new Queen(color).toString();
             case BISHOP -> new Bishop(color).toString();
             case KNIGHT -> new Knight(color).toString();
-            default -> null;
         };
     }
 }

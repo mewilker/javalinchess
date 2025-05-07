@@ -26,6 +26,6 @@ public class Queen extends ChessPiece {
 
     @Override
     public String toString (){
-        return color == ChessGame.TeamColor.WHITE ? "wq" : "bq";
+        return getTeamColor() == ChessGame.TeamColor.WHITE ? "wq" : "bq";
     }
 }

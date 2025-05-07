@@ -23,7 +23,7 @@ public class Pawn extends ChessPiece {
     }
 
     private ChessMove forwardTwo(ChessBoard board, ChessPosition myPosition){
-        if (color == ChessGame.TeamColor.WHITE) {
+        if (getTeamColor() == ChessGame.TeamColor.WHITE) {
             if (myPosition.getRow() == 2) {
                 ChessPosition inFront = new ChessPosition(3, myPosition.getColumn());
                 ChessPosition inspect = new ChessPosition(4, myPosition.getColumn());
@@ -32,7 +32,7 @@ public class Pawn extends ChessPiece {
                 }
             }
         }
-        if (color == ChessGame.TeamColor.BLACK){
+        if (getTeamColor() == ChessGame.TeamColor.BLACK){
             if (myPosition.getRow() == 7) {
                 ChessPosition inFront = new ChessPosition(6, myPosition.getColumn());
                 ChessPosition inspect = new ChessPosition(5, myPosition.getColumn());
@@ -46,17 +46,15 @@ public class Pawn extends ChessPiece {
 
     private HashSet<ChessMove> forwardOne(ChessBoard board, ChessPosition myPosition){
         HashSet<ChessMove> moves = new HashSet<>();
-        if (color == ChessGame.TeamColor.WHITE) {
-            ChessPosition inspect = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
-            if (board.getPiece(inspect) == null) {
-                moves.addAll(checkPromotes(myPosition, inspect));
-            }
+        ChessPosition inspect;
+        if (getTeamColor() == ChessGame.TeamColor.WHITE) {
+            inspect = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
         }
         else{
-            ChessPosition inspect = new ChessPosition(myPosition.getRow()-1, myPosition.getColumn());
-            if(board.getPiece(inspect) == null){
-                moves.addAll(checkPromotes(myPosition, inspect));
-            }
+            inspect = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
+        }
+        if (board.getPiece(inspect) == null) {
+            moves.addAll(checkPromotes(myPosition, inspect));
         }
         return moves;
     }
@@ -64,7 +62,7 @@ public class Pawn extends ChessPiece {
     private HashSet<ChessMove> captures(ChessBoard board, ChessPosition myPosition){
         HashSet<ChessMove> moves = new HashSet<>();
         ChessPosition inspect;
-        if (this.color == ChessGame.TeamColor.WHITE) {
+        if (getTeamColor() == ChessGame.TeamColor.WHITE) {
             inspect = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
         }
         else{
@@ -79,7 +77,7 @@ public class Pawn extends ChessPiece {
             }
             if (board.isOnBoard(inspect)) {
                 ChessPiece capture = board.getPiece(inspect);
-                if (capture != null && capture.getTeamColor() != this.color) {
+                if (capture != null && capture.getTeamColor() != getTeamColor()) {
                     moves.addAll(checkPromotes(myPosition, inspect));
                 }
             }
@@ -90,7 +88,7 @@ public class Pawn extends ChessPiece {
     private HashSet<ChessMove> checkPromotes(ChessPosition myPosition, ChessPosition toMove){
         HashSet<ChessMove> promotions = new HashSet<>();
         int comp;
-        if (this.color == ChessGame.TeamColor.WHITE) {
+        if (getTeamColor() == ChessGame.TeamColor.WHITE) {
             comp = 8;
         }
         else{
@@ -110,6 +108,6 @@ public class Pawn extends ChessPiece {
 
     @Override
     public String toString (){
-        return color == ChessGame.TeamColor.WHITE ? "wp" : "bp";
+        return getTeamColor() == ChessGame.TeamColor.WHITE ? "wp" : "bp";
     }
 }

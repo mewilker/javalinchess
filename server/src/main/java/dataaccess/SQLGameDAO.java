@@ -45,7 +45,7 @@ public class SQLGameDAO implements GameDAO{
 
             preparedStatement.executeUpdate();
 
-            try(ResultSet resultSet = preparedStatement.getGeneratedKeys();) {
+            try(ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
                 if (resultSet.next()) {
                     return resultSet.getInt(1);
                 }
@@ -113,7 +113,7 @@ public class SQLGameDAO implements GameDAO{
     public GameData getGame(int gameID) throws DataAccessException {
         String statement = "SELECT * FROM games WHERE gameID = ?";
         try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(statement);){
+             PreparedStatement preparedStatement = connection.prepareStatement(statement)){
             preparedStatement.setInt(1, gameID);
              try(ResultSet resultSet = preparedStatement.executeQuery()) {
                  if (resultSet.next()) {

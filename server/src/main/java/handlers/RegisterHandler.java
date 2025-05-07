@@ -11,8 +11,6 @@ import requests.RegisterRequest;
 import response.Result;
 import services.RegisterService;
 
-import java.util.Objects;
-
 public class RegisterHandler implements Handler {
     private final RegisterService service;
     public RegisterHandler(UserDAO user, AuthDAO auth){

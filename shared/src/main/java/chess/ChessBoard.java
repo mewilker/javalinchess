@@ -28,9 +28,7 @@ public class ChessBoard {
         this.blackPieces = new HashSet<>(other.blackPieces);
         this.whitePieces = new HashSet<>(other.whitePieces);
         for (int i = 0; i < 8; i++){
-            for (int j = 0; j < 8; j++){
-                this.squares[i][j] = other.squares[i][j];
-            }
+            System.arraycopy(other.squares[i], 0, this.squares[i], 0, 8);
         }
     }
 

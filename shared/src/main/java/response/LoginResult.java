@@ -1,8 +1,8 @@
 package response;
 
 public class LoginResult extends Result{
-    String username;
-    String authToken;
+    private final String username;
+    private final String authToken;
 
     public LoginResult(String authToken, String username){
         this.authToken = authToken;

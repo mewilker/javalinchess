@@ -3,18 +3,15 @@ package context;
 import facade.ServerFacade;
 import ui.Display;
 
-import java.util.Collection;
 import java.util.Locale;
 
 public class ContextManager {
 
-    ServerFacade server;
-    Display display;
-    Context context;
+    private final Display display;
+    private Context context;
 
     public ContextManager(Display display, ServerFacade server){
         this.display = display;
-        this.server = server;
         context = new PreLogin(display, server);
     }
 

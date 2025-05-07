@@ -8,7 +8,6 @@ import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
 import requests.LoginRequest;
-import requests.RegisterRequest;
 import response.Result;
 import services.LoginService;
 
