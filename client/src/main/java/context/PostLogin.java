@@ -8,6 +8,7 @@ import ui.Display;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class PostLogin implements Context{
     private final ServerFacade server;
@@ -62,11 +63,40 @@ public class PostLogin implements Context{
     }
 
     private Context playGame(){
+        try{
+            int number = validateGameNumber();
+            ChessGame.TeamColor color = ChessGame.TeamColor.valueOf(
+                    display.stringField("Side Color").toUpperCase(Locale.ROOT));
+            server.joinGame(color, number);
+        } catch (IllegalArgumentException e){
+            String errorMessage = e.getMessage().contains("Could not find game") ? e.getMessage() : "Not a valid color";
+            display.printError("Not a valid color");
+            return this;
+        } catch (ServerErrorException e) {
+            display.printError(e.getMessage());
+            return this;
+        }
+        //TODO: WSFACADE AND CHANGE CONTEXT TO PLAYGAME
         return this;
     }
 
     private Context observeGame(){
+        try{
+            int number = validateGameNumber();
+        } catch (IllegalArgumentException e){
+            display.printError(e.getMessage());
+            //return this;
+        }
+        //TODO: WS FACADE AND CHANGE CONTEXT TO PLAYGAME
         return this;
+    }
+
+    private int validateGameNumber(){
+        int number = display.numberEntryField("Game Number");
+        if (gameStorage.get(number) == null){
+            throw new IllegalArgumentException("Could not find game");
+        }
+        return number;
     }
 
     private Context logout(){
