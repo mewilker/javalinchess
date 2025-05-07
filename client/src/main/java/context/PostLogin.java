@@ -13,8 +13,8 @@ import java.util.Locale;
 public class PostLogin implements Context{
     private final ServerFacade server;
     private final Display display;
-    private int nextID = 1;
     private final HashMap<Integer, GameData> gameStorage = new HashMap<>();
+    private int nextID = 1;
 
     public PostLogin(ServerFacade server, Display display){
         this.server = server;
@@ -45,6 +45,9 @@ public class PostLogin implements Context{
             display.printGamesTable(gameStorage);
         } catch (ServerErrorException e) {
             display.printError(e.getMessage());
+            if(server.isNotAuthorized()){
+                return new PreLogin(display, server);
+            }
         }
         return this;
     }
@@ -58,6 +61,9 @@ public class PostLogin implements Context{
             nextID++;
         } catch (ServerErrorException e) {
             display.printError(e.getMessage());
+            if (server.isNotAuthorized()){
+                return new PreLogin(display, server);
+            }
         }
         return this;
     }
@@ -70,10 +76,13 @@ public class PostLogin implements Context{
             server.joinGame(color, number);
         } catch (IllegalArgumentException e){
             String errorMessage = e.getMessage().contains("Could not find game") ? e.getMessage() : "Not a valid color";
-            display.printError("Not a valid color");
+            display.printError(errorMessage);
             return this;
         } catch (ServerErrorException e) {
             display.printError(e.getMessage());
+            if (server.isNotAuthorized()){
+                return new PreLogin(display, server);
+            }
             return this;
         }
         //TODO: WSFACADE AND CHANGE CONTEXT TO PLAYGAME

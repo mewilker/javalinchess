@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
 
 public class HttpCommunicator {
     private final HttpClient http = HttpClient.newHttpClient();
@@ -34,6 +35,7 @@ public class HttpCommunicator {
             return sendRequest(httpReq);
         }
         catch (URISyntaxException e){
+            logException(e);
             throw new ServerErrorException(communicationError, e);
         }
     }
@@ -48,6 +50,7 @@ public class HttpCommunicator {
             return sendRequest(request);
         }
         catch (URISyntaxException e){
+            logException(e);
             throw new ServerErrorException(communicationError, e);
         }
     }
@@ -61,6 +64,7 @@ public class HttpCommunicator {
             return sendRequest(request);
         }
         catch (URISyntaxException e){
+            logException(e);
             throw new ServerErrorException(communicationError, e);
         }
     }
@@ -76,6 +80,7 @@ public class HttpCommunicator {
             return sendRequest(httpRequest);
         }
         catch (URISyntaxException e){
+            logException(e);
             throw new ServerErrorException(communicationError, e);
         }
     }
@@ -87,12 +92,18 @@ public class HttpCommunicator {
             return GSON.fromJson(response.body(), Result.class);
         }
         catch (InterruptedException | IOException e){
+            logException(e);
             throw new ServerErrorException(communicationError, e);
         }
     }
 
     public int getLastStatusCode(){
         return lastStatusCode;
+    }
+
+    private void logException(Exception e){
+        System.err.print(e.getMessage());
+        e.printStackTrace(System.err);
     }
 
 }
