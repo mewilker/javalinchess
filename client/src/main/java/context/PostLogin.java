@@ -17,6 +17,12 @@ public class PostLogin implements Context{
     public PostLogin(ServerFacade server, Display display){
         this.server = server;
         this.display = display;
+        menu();
+        try{
+            populateGames();
+        } catch (ServerErrorException e) {
+            display.printError(e.getMessage());
+        }
     }
 
     @Override
@@ -32,6 +38,11 @@ public class PostLogin implements Context{
     }
 
     private Context listGames(){
+        try{
+            populateGames();
+        } catch (ServerErrorException e) {
+            display.printError(e.getMessage());
+        }
         return this;
     }
 
@@ -72,7 +83,7 @@ public class PostLogin implements Context{
         return this;
     }
 
-    private void populateGames() throws ServerErrorException{
+    private void populateGames() throws ServerErrorException {
         ArrayList<GameData> games = server.listGames();
         int index = 1;
         for(GameData game : games){
