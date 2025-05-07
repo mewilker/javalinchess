@@ -1,5 +1,6 @@
 package context;
 
+import chess.ChessGame;
 import datamodels.GameData;
 import facade.ServerErrorException;
 import facade.ServerFacade;
@@ -12,7 +13,7 @@ public class PostLogin implements Context{
     private final ServerFacade server;
     private final Display display;
     private int nextID = 1;
-    private HashMap<Integer, GameData> gameStorage;
+    private final HashMap<Integer, GameData> gameStorage = new HashMap<>();
 
     public PostLogin(ServerFacade server, Display display){
         this.server = server;
@@ -48,6 +49,15 @@ public class PostLogin implements Context{
     }
 
     private Context createGame(){
+        String name = display.stringField("Game Name");
+        try{
+            int gameID = server.createGame(name);
+            gameStorage.put(nextID, new GameData(gameID, name, null, null, new ChessGame()));
+            display.printNotification("Created game " + name  + "! Join using #" + nextID + "!");
+            nextID++;
+        } catch (ServerErrorException e) {
+            display.printError(e.getMessage());
+        }
         return this;
     }
 
@@ -85,6 +95,7 @@ public class PostLogin implements Context{
     }
 
     private void populateGames() throws ServerErrorException {
+        gameStorage.clear();
         ArrayList<GameData> games = server.listGames();
         int index = 1;
         for(GameData game : games){

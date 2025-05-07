@@ -81,7 +81,7 @@ public class ConsoleDisplay implements Display{
 
     public void printGamesTable(HashMap<Integer,GameData> games){
         out.print(SET_TEXT_BOLD);
-        printGameRow("ID", "GAME NAME", "WHITE TEAM", "BLACK TEAM");
+        printGameRow("NUMBER", "GAME NAME", "WHITE TEAM", "BLACK TEAM");
         out.print(RESET_TEXT_BOLD_FAINT);
         for (int i = 1; i < games.size()+1; i++){
             GameData game = games.get(i);
@@ -106,4 +106,10 @@ public class ConsoleDisplay implements Display{
         out.print("\n");
     }
 
+    @Override
+    public void printNotification(String message) {
+        out.print(SET_TEXT_COLOR_MAGENTA);
+        out.print(message + "\n");
+        out.print(SET_TEXT_COLOR_BLUE);
+    }
 }

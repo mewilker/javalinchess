@@ -10,4 +10,5 @@ public interface Display {
     public int numberEntryField(String prompt);
     public void printError(String toPrint);
     public void printGamesTable(HashMap<Integer, GameData> games);
+    public void printNotification(String message);
 }
