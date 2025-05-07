@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PostLogin implements Context{
-    ServerFacade server;
-    Display display;
-    int nextID = 1;
-    HashMap<Integer, GameData> gameStorage;
+    private final ServerFacade server;
+    private final Display display;
+    private int nextID = 1;
+    private HashMap<Integer, GameData> gameStorage;
 
     public PostLogin(ServerFacade server, Display display){
         this.server = server;
@@ -40,6 +40,7 @@ public class PostLogin implements Context{
     private Context listGames(){
         try{
             populateGames();
+            display.printGamesTable(gameStorage);
         } catch (ServerErrorException e) {
             display.printError(e.getMessage());
         }

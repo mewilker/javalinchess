@@ -1,6 +1,9 @@
 package ui;
 
+import datamodels.GameData;
+
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
@@ -74,6 +77,33 @@ public class ConsoleDisplay implements Display{
         out.print(toPrint);
         out.print(SET_TEXT_COLOR_BLUE);
         out.print(RESET_TEXT_BOLD_FAINT);
+    }
+
+    public void printGamesTable(HashMap<Integer,GameData> games){
+        out.print(SET_TEXT_BOLD);
+        printGameRow("ID", "GAME NAME", "WHITE TEAM", "BLACK TEAM");
+        out.print(RESET_TEXT_BOLD_FAINT);
+        for (int i = 1; i < games.size()+1; i++){
+            GameData game = games.get(i);
+            printGameRow(Integer.toString(i), game.gameName(),
+                    game.whiteUsername() == null ? "AVAILABLE" : game.whiteUsername(),
+                    game.blackUsername() == null ? "AVAILABLE" : game.blackUsername());
+        }
+        out.print(SET_TEXT_COLOR_BLUE);
+    }
+
+    private void printGameRow(String id, String gameName, String whiteUsername, String blackUsername){
+        out.print(SET_TEXT_COLOR_MAGENTA);
+        out.print(id + " ");
+        out.print(SET_TEXT_COLOR_YELLOW);
+        out.print(gameName + " ");
+        out.print(SET_TEXT_COLOR_WHITE);
+        out.print(whiteUsername + " ");
+        out.print(SET_BG_COLOR_WHITE);
+        out.print(SET_TEXT_COLOR_BLACK);
+        out.print(blackUsername);
+        out.print(SET_BG_COLOR_BLACK);
+        out.print("\n");
     }
 
 }
