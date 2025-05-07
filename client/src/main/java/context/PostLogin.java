@@ -72,6 +72,7 @@ public class PostLogin implements Context{
     private Context logout(){
         try {
             server.logout();
+            display.printNotification("Logout successful");
         }
         catch (ServerErrorException e){
             display.printError(e.getMessage());
@@ -81,6 +82,7 @@ public class PostLogin implements Context{
 
     private Context menu(){
         String menu = """
+                
                 ****OPTIONS****
                 Type "help" for options
                 Type "logout" or "l" to logout
@@ -89,6 +91,7 @@ public class PostLogin implements Context{
                 Type "join", "j", "play" or "p" to play a game
                 Type "observe" or "o" to watch a game
                 Type "quit" to exit
+                
                 """;
         display.printText(menu);
         return this;

@@ -24,7 +24,7 @@ public class ConsoleDisplay implements Display{
         out.print(WHITE_QUEEN);
         out.print(" Welcome to Makenna's Chess Server!");
         out.print(WHITE_QUEEN);
-        out.print("\n\n");
+        out.println();
         out.print(RESET_TEXT_BOLD_FAINT);
         out.print(SET_TEXT_COLOR_BLUE);
     }
@@ -64,7 +64,7 @@ public class ConsoleDisplay implements Display{
                 number = Integer.parseInt(numberString);
             }
             catch (NumberFormatException e){
-                printError("\"" + numberString + "\" is not a valid number. Please try again.\n");
+                printError("\"" + numberString + "\" is not a valid number. Please try again.");
                 numberString = getInput();
             }
         } while (number <= 0);
@@ -74,12 +74,13 @@ public class ConsoleDisplay implements Display{
     public void printError(String toPrint){
         out.print(SET_TEXT_COLOR_RED);
         out.print(SET_TEXT_BOLD);
-        out.print(toPrint);
+        out.println(toPrint);
         out.print(SET_TEXT_COLOR_BLUE);
         out.print(RESET_TEXT_BOLD_FAINT);
     }
 
     public void printGamesTable(HashMap<Integer,GameData> games){
+        out.println();
         out.print(SET_TEXT_BOLD);
         printGameRow("NUMBER", "GAME NAME", "WHITE TEAM", "BLACK TEAM");
         out.print(RESET_TEXT_BOLD_FAINT);
@@ -90,6 +91,7 @@ public class ConsoleDisplay implements Display{
                     game.blackUsername() == null ? "AVAILABLE" : game.blackUsername());
         }
         out.print(SET_TEXT_COLOR_BLUE);
+        out.println();
     }
 
     private void printGameRow(String id, String gameName, String whiteUsername, String blackUsername){
@@ -103,13 +105,13 @@ public class ConsoleDisplay implements Display{
         out.print(SET_TEXT_COLOR_BLACK);
         out.print(blackUsername);
         out.print(SET_BG_COLOR_BLACK);
-        out.print("\n");
+        out.println();
     }
 
     @Override
     public void printNotification(String message) {
         out.print(SET_TEXT_COLOR_MAGENTA);
-        out.print(message + "\n");
+        out.println(message);
         out.print(SET_TEXT_COLOR_BLUE);
     }
 }

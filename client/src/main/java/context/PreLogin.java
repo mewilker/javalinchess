@@ -48,6 +48,7 @@ public class PreLogin implements Context{
 
     private Context menu(){
         String menu = """
+                
                 ****OPTIONS****
                 Type "help" for options
                 Type "quit" to exit
