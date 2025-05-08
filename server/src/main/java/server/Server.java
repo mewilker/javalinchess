@@ -29,7 +29,9 @@ public class Server {
 
     public int run(int desiredPort) {
         javalin.start(desiredPort);
-
+        javalin.ws("/ws", wsConfig -> {
+            wsConfig.onMessage(new WebSocketHandler());
+        });
         // Register your endpoints and handle exceptions here.
         javalin.delete("/db", new ClearHandler(userDB, authDB, gameDB));
         javalin.post("/user", new RegisterHandler(userDB, authDB));
