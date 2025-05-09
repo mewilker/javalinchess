@@ -7,6 +7,7 @@ import response.CreateGameResult;
 import response.ListGamesResult;
 import response.LoginResult;
 import response.Result;
+import websocket.commands.*;
 
 import java.util.ArrayList;
 
@@ -63,6 +64,20 @@ public class TypeAdapters {
             }
             return null;
         };
+    }
+
+    public static JsonDeserializer<UserGameCommand> commandDeserializer(){
+        return ((jsonElement, type, context) -> {
+            JsonObject obj = jsonElement.getAsJsonObject();
+            JsonPrimitive prim = obj.getAsJsonPrimitive("commandType");
+            UserGameCommand.CommandType command = UserGameCommand.CommandType.valueOf(prim.getAsString());
+            return switch (command){
+                case MAKE_MOVE -> context.deserialize(jsonElement, MakeMoveCommand.class);
+                case LEAVE -> context.deserialize(jsonElement, LeaveCommand.class);
+                case CONNECT -> context.deserialize(jsonElement, ConnectCommand.class);
+                case RESIGN -> context.deserialize(jsonElement, ResignCommand.class);
+            };
+        });
     }
 
 }
