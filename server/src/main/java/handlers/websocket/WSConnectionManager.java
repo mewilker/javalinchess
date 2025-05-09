@@ -34,7 +34,7 @@ public class WSConnectionManager {
         Set<WsContext> sessions = sessionMap.get(id);
         sessions = Set.copyOf(sessions);
         for (WsContext session : sessions) {
-            if (session.session.isOpen() && session.equals(context)) {
+            if (session.session.isOpen() && (context == null || !session.equals(context))) {
                 session.send(message);
             } else if (!session.session.isOpen()) {
                 removeConnection(id, session);

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import dataaccess.*;
 import datamodels.AuthData;
 import handlers.*;
+import handlers.websocket.WebSocketHandler;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.UnauthorizedResponse;
