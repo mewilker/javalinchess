@@ -1,6 +1,7 @@
 package server;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import dataaccess.*;
 import datamodels.AuthData;
 import handlers.*;
@@ -57,6 +58,13 @@ public class Server {
             result.setMessage(e.getMessage());
             ctx.json(new Gson().toJson(result));
         });
+        javalin.exception(JsonSyntaxException.class, (e, ctx) ->{
+            ctx.status(400);
+            Result result = new Result();
+            result.setMessage("Error: bad request");
+            ctx.json(new Gson().toJson(result));
+        });
+
         return javalin.port();
     }
 
