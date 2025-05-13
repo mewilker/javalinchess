@@ -1,6 +1,7 @@
 package context;
 
 import chess.ChessGame;
+import chess.ChessPosition;
 import facade.ServerFacade;
 import facade.WsMessageHandler;
 import ui.Display;
@@ -33,6 +34,7 @@ public class GamePlay implements Context, WsMessageHandler {
     }
 
     private Context redraw() {
+        display.printGame(color, game);
         return this;
     }
 
@@ -98,7 +100,9 @@ public class GamePlay implements Context, WsMessageHandler {
     @Override
     public void handleLoadGame(LoadGameMessage load) {
         game = load.getGame();
-        //display.printBoard(board);
+        display.printText("");
+        display.printGame(color, game);
+        display.printText("Chess:");
     }
 
     @Override

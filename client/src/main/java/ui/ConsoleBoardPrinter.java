@@ -34,6 +34,7 @@ public class ConsoleBoardPrinter {
     }
 
     public void printGame(ChessGame.TeamColor color, ChessGame game, ChessPosition highlighted) {
+        out.print(SET_TEXT_COLOR_BLUE);
         HashSet<ChessPosition> validEndPositions = null;
         String piecesHeader = " " + A + " " + B + " " + C + " " + D + E + " " + F + " " + G + " " + H + " ";
         String letterHeader = "  a  b  c  d  e  f  g  h ";
@@ -55,6 +56,7 @@ public class ConsoleBoardPrinter {
             printWhitePerspective(game.getBoard(), validEndPositions, highlighted);
         }
         out.println(header);
+        out.print(SET_TEXT_COLOR_WHITE);
     }
 
     private void printWhitePerspective(ChessBoard board, Collection<ChessPosition> highlights, ChessPosition start) {

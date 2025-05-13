@@ -118,11 +118,23 @@ public class ConsoleDisplay implements Display {
 
     @Override
     public void printGame(ChessGame.TeamColor color, ChessGame game) {
+        if (game == null){
+            printError("Could not print board, try again later.");
+            return;
+        }
+        out.println();
         new ConsoleBoardPrinter(out).printGame(color, game);
+        out.println();
     }
 
     @Override
     public void printGame(ChessGame.TeamColor color, ChessGame game, ChessPosition highlighted) {
+        if (game == null){
+            printError("Could not print board, try again later.");
+            return;
+        }
+        out.println();
         new ConsoleBoardPrinter(out).printGame(color, game, highlighted);
+        out.println();
     }
 }
