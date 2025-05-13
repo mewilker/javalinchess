@@ -20,6 +20,12 @@ public class ChessGame {
         board.resetBoard();
     }
 
+    public ChessGame(ChessGame other){
+        board = new ChessBoard(other.board);
+        currTurn = other.currTurn;
+        resigned = other.resigned;
+    }
+
     /**
      * @return Which team's turn it is
      */
