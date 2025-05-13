@@ -10,12 +10,16 @@ import response.CreateGameResult;
 import response.ListGamesResult;
 import response.LoginResult;
 import response.Result;
+import websocket.commands.ConnectCommand;
+import websocket.commands.UserGameCommand;
 
 import java.util.ArrayList;
 
 public class ServerFacade {
     private final String url;
     private final HttpCommunicator http = new HttpCommunicator();
+    private WSCommunicator ws;
+    private int joinedID;
 
     private String authToken = "";
 
@@ -112,5 +116,21 @@ public class ServerFacade {
 
     private void logToError(Result result) {
         System.err.println("Server Error: " + http.getLastStatusCode() + " " + result.getMessage());
+    }
+    private void logToError(Exception e){
+        System.err.print(e.getMessage());
+        e.printStackTrace(System.err);
+    }
+
+    public void connect(int gameID, WsMessageHandler handler) throws ServerErrorException{
+        try {
+            ws = new WSCommunicator(url.replace("http", "ws"), handler);
+            String message = new ConnectCommand(authToken, gameID).toString();
+            ws.send(message);
+        }
+        catch (Exception e){
+            logToError(e);
+            throw new ServerErrorException("Could not connect to game", e);
+        }
     }
 }
