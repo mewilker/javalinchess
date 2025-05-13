@@ -10,6 +10,7 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.UnauthorizedResponse;
 import response.Result;
+import websocket.messages.ErrorMessage;
 
 
 public class Server {
@@ -35,6 +36,13 @@ public class Server {
         javalin.ws("/ws", wsConfig -> {
             wsConfig.onMessage(handler);
             wsConfig.onClose(handler);
+            wsConfig.onError(ctx -> {
+                if (ctx.error() != null){
+                    System.err.print(ctx.error().getMessage());
+                    ctx.error().printStackTrace();
+                }
+                ctx.send(new ErrorMessage("There was a problem with the server. Please try again.").toString());
+            });
         });
         // Register your endpoints and handle exceptions here.
         javalin.delete("/db", new ClearHandler(userDB, authDB, gameDB));
