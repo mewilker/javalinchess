@@ -124,7 +124,7 @@ public class ServerFacade {
 
     public void connect(int gameID, WsMessageHandler handler) throws ServerErrorException{
         try {
-            ws = new WSCommunicator(url.replace("http", "ws"), handler);
+            ws = new WSCommunicator(url.replace("http", "ws") + "/ws", handler);
             String message = new ConnectCommand(authToken, gameID).toString();
             ws.send(message);
         }
