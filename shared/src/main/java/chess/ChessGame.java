@@ -12,8 +12,9 @@ import java.util.Objects;
  */
 public class ChessGame {
 
-    ChessBoard board = new ChessBoard();
-    TeamColor currTurn = TeamColor.WHITE;
+    private ChessBoard board = new ChessBoard();
+    private TeamColor currTurn = TeamColor.WHITE;
+    private boolean resigned = false;
 
     public ChessGame() {
         board.resetBoard();
@@ -83,6 +84,9 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
+        if (resigned){
+            throw new InvalidMoveException("Cannot move after game has been resigned");
+        }
         ChessPiece piece = board.getPiece(move.getStartPosition());
         if (piece == null) {
             throw new InvalidMoveException("There is no piece at " + move.getStartPosition().toString());
@@ -181,6 +185,14 @@ public class ChessGame {
      */
     public void setBoard(ChessBoard board) {
         this.board = board;
+    }
+
+    public boolean isResigned(){
+        return resigned;
+    }
+
+    public void resign(){
+        resigned = true;
     }
 
     @Override

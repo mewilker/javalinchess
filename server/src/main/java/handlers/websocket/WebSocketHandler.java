@@ -103,6 +103,25 @@ public class WebSocketHandler implements WsMessageHandler, WsCloseHandler {
 
     private void resign(ResignCommand command, WsMessageContext context, GameData lobby, AuthData auth)
             throws DataAccessException{
+        if (isObserver(lobby, auth.username())){
+            context.send(new ErrorMessage("Observers cannot resign").toString());
+            return;
+        }
+        if (lobby.game().isResigned() || lobby.game().isInCheckmate(BLACK) || lobby.game().isInCheckmate(WHITE)){
+            context.send(new ErrorMessage("Cannot resign after game over").toString());
+            return;
+        }
+        lobby.game().resign();
+        gameDB.updateGame(lobby);
+        String notification = auth.username() + " has resigned! ";
+        if (auth.username().equals(lobby.whiteUsername())){
+            notification = notification + getUsernameOfColor(BLACK, lobby);
+        }
+        else {
+            notification = notification + getUsernameOfColor(WHITE, lobby);
+        }
+        notification = notification + " wins!";
+        connectionManager.broadcast(new NotificationMessage(notification).toString(), lobby.gameID());
     }
 
     private void move(MakeMoveCommand command, WsMessageContext context, GameData lobby, AuthData auth)
@@ -111,7 +130,7 @@ public class WebSocketHandler implements WsMessageHandler, WsCloseHandler {
         ChessGame.TeamColor turn = game.getTeamTurn();
         if (turn == WHITE && !auth.username().equals(lobby.whiteUsername()) ||
                 turn == BLACK && !auth.username().equals(lobby.blackUsername())){
-            if (!auth.username().equals(lobby.blackUsername()) && !auth.username().equals(lobby.whiteUsername())){
+            if (isObserver(lobby, auth.username())){
                 context.send(new ErrorMessage("Observers cannot move pieces").toString());
                 return;
             }
@@ -145,7 +164,7 @@ public class WebSocketHandler implements WsMessageHandler, WsCloseHandler {
                 connectionManager.broadcast(notification, lobby.gameID());
             }
         } catch (InvalidMoveException e) {
-            context.send(new ErrorMessage("Given move was invalid").toString());
+            context.send(new ErrorMessage("Given move was invalid: " + e.getMessage()).toString());
         }
     }
 
@@ -154,6 +173,13 @@ public class WebSocketHandler implements WsMessageHandler, WsCloseHandler {
             case BLACK -> data.blackUsername();
             case WHITE -> data.whiteUsername();
         };
+    }
+
+    private boolean isObserver(GameData lobby, String username){
+        if (!username.equals(lobby.blackUsername()) && !username.equals(lobby.whiteUsername())){
+            return true;
+        }
+        return false;
     }
 
     @Override
