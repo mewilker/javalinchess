@@ -137,6 +137,7 @@ public class ServerFacade {
 
     public void leave(int gameID) throws ServerErrorException {
         sendCommand(new LeaveCommand(authToken, gameID));
+        ws = null;
     }
 
     public void resign(int gameID) throws ServerErrorException {
@@ -149,15 +150,15 @@ public class ServerFacade {
 
     private void sendCommand(UserGameCommand command)throws ServerErrorException{
         if (ws == null){
+            System.err.println("Websocket is null");
             throw new ServerErrorException("Could not connect to game");
         }
         try{
             ws.send(command.toString());
         } catch (IOException e) {
-            throw new ServerErrorException("Could not connect to game", e);
-        }
-        finally {
+            logToError(e);
             ws = null;
+            throw new ServerErrorException("Could not connect to game", e);
         }
     }
 }
