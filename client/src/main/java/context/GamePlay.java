@@ -76,6 +76,12 @@ public class GamePlay implements Context, WsMessageHandler {
     }
 
     private Context leave() {
+        try{
+            server.leave(gameID);
+        }
+        catch (ServerErrorException e){
+            display.printError(e.getMessage());
+        }
         return new PostLogin(server, display);
     }
 
@@ -113,7 +119,9 @@ public class GamePlay implements Context, WsMessageHandler {
 
     @Override
     public void handleError(ErrorMessage error) {
+        display.printText("");
         display.printError(error.getErrorMessage());
+        display.printText("Chess:");
     }
 
     @Override
@@ -127,5 +135,6 @@ public class GamePlay implements Context, WsMessageHandler {
     @Override
     public void handleNotification(NotificationMessage notification) {
         display.printNotification(notification.getMessage());
+        display.printText("Chess:");
     }
 }
