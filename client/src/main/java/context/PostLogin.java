@@ -74,7 +74,7 @@ public class PostLogin implements Context {
             ChessGame.TeamColor color = ChessGame.TeamColor.valueOf(
                     display.stringField("Side Color").toUpperCase(Locale.ROOT));
             server.joinGame(color, number);
-            GamePlay play = new GamePlay(server, display, color);
+            GamePlay play = new GamePlay(server, display, color, number);
             server.connect(number, play);
             return play;
         } catch (IllegalArgumentException e) {
@@ -93,7 +93,7 @@ public class PostLogin implements Context {
     private Context observeGame() {
         try {
             int number = validateGameNumber();
-            GamePlay play = new GamePlay(server, display, null);
+            GamePlay play = new GamePlay(server, display, null, number);
             server.connect(number, play);
             return play;
         } catch (IllegalArgumentException | ServerErrorException e) {

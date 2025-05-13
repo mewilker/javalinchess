@@ -1,7 +1,10 @@
 package context;
 
 import chess.ChessGame;
+import chess.ChessMove;
 import chess.ChessPosition;
+import chess.InvalidMoveException;
+import facade.ServerErrorException;
 import facade.ServerFacade;
 import facade.WsMessageHandler;
 import ui.Display;
@@ -14,11 +17,13 @@ public class GamePlay implements Context, WsMessageHandler {
     Display display;
     ChessGame.TeamColor color;
     ChessGame game;
+    int gameID;
 
-    public GamePlay(ServerFacade facade, Display display, ChessGame.TeamColor color) {
+    public GamePlay(ServerFacade facade, Display display, ChessGame.TeamColor color, int id) {
         this.display = display;
         this.server = facade;
         this.color = color;
+        this.gameID = id;
     }
 
     @Override
@@ -45,6 +50,20 @@ public class GamePlay implements Context, WsMessageHandler {
     private Context move() {
         if (color == null){
             return menu();
+        }
+        try{
+            ChessPosition startPosition = new ChessPosition(display.stringField("Start Position (format: a1)"));
+            ChessPosition endPosition = new ChessPosition(display.stringField("End position"));
+            ChessMove move = new ChessMove(startPosition, endPosition, null);
+            ChessGame copy = new ChessGame(game);
+            copy.makeMove(move);
+            server.makeMove(gameID, move);
+        } catch (NumberFormatException e){
+            display.printError("Not a valid position");
+        } catch (IllegalArgumentException | ServerErrorException e){
+            display.printError(e.getMessage());
+        } catch (InvalidMoveException e) {
+            display.printError("Move is invalid: " + e.getMessage());
         }
         return this;
     }
