@@ -8,6 +8,10 @@ import response.ListGamesResult;
 import response.LoginResult;
 import response.Result;
 import websocket.commands.*;
+import websocket.messages.ErrorMessage;
+import websocket.messages.LoadGameMessage;
+import websocket.messages.NotificationMessage;
+import websocket.messages.ServerMessage;
 
 import java.util.ArrayList;
 
@@ -76,6 +80,19 @@ public class TypeAdapters {
                 case LEAVE -> context.deserialize(jsonElement, LeaveCommand.class);
                 case CONNECT -> context.deserialize(jsonElement, ConnectCommand.class);
                 case RESIGN -> context.deserialize(jsonElement, ResignCommand.class);
+            };
+        });
+    }
+
+    public static JsonDeserializer<ServerMessage> messageDeserializer(){
+        return ((jsonElement, type, context) -> {
+            JsonObject obj = jsonElement.getAsJsonObject();
+            JsonPrimitive prim = obj.getAsJsonPrimitive("serverMessageType");
+            ServerMessage.ServerMessageType message = ServerMessage.ServerMessageType.valueOf(prim.getAsString());
+            return switch (message){
+                case NOTIFICATION -> context.deserialize(jsonElement, NotificationMessage.class);
+                case ERROR -> context.deserialize(jsonElement, ErrorMessage.class);
+                case LOAD_GAME -> context.deserialize(jsonElement, LoadGameMessage.class);
             };
         });
     }
