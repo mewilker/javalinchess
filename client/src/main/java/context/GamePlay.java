@@ -12,6 +12,8 @@ import websocket.messages.ErrorMessage;
 import websocket.messages.LoadGameMessage;
 import websocket.messages.NotificationMessage;
 
+import java.util.Locale;
+
 public class GamePlay implements Context, WsMessageHandler {
     ServerFacade server;
     Display display;
@@ -71,6 +73,15 @@ public class GamePlay implements Context, WsMessageHandler {
     private Context resign() {
         if (color == null){
             return menu();
+        }
+        display.printError("Are you sure you want to resign?");
+        if (!display.stringField("Type \"yes\" to confirm").toLowerCase(Locale.ROOT).equals("yes")){
+            return this;
+        }
+        try{
+            server.resign(gameID);
+        } catch (ServerErrorException e) {
+            display.printError(e.getMessage());
         }
         return this;
     }
