@@ -1,5 +1,7 @@
 package ui;
 
+import chess.ChessGame;
+import chess.ChessPosition;
 import datamodels.GameData;
 
 import java.util.HashMap;
@@ -16,4 +18,8 @@ public interface Display {
     void printGamesTable(HashMap<Integer, GameData> games);
 
     void printNotification(String message);
+
+    void printGame(ChessGame.TeamColor color, ChessGame game);
+
+    void printGame(ChessGame.TeamColor color, ChessGame game, ChessPosition highlighted);
 }

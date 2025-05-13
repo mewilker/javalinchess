@@ -1,5 +1,7 @@
 package ui;
 
+import chess.ChessGame;
+import chess.ChessPosition;
 import datamodels.GameData;
 
 import java.io.PrintStream;
@@ -112,5 +114,15 @@ public class ConsoleDisplay implements Display {
         out.print(SET_TEXT_COLOR_MAGENTA);
         out.println(message);
         out.print(SET_TEXT_COLOR_BLUE);
+    }
+
+    @Override
+    public void printGame(ChessGame.TeamColor color, ChessGame game) {
+        new ConsoleBoardPrinter(out).printGame(color, game);
+    }
+
+    @Override
+    public void printGame(ChessGame.TeamColor color, ChessGame game, ChessPosition highlighted) {
+        new ConsoleBoardPrinter(out).printGame(color, game, highlighted);
     }
 }
