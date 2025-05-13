@@ -74,6 +74,9 @@ public class PostLogin implements Context {
             ChessGame.TeamColor color = ChessGame.TeamColor.valueOf(
                     display.stringField("Side Color").toUpperCase(Locale.ROOT));
             server.joinGame(color, number);
+            GamePlay play = new GamePlay(server, display, color);
+            server.connect(number, play);
+            return play;
         } catch (IllegalArgumentException e) {
             String errorMessage = e.getMessage().contains("Could not find game") ? e.getMessage() : "Not a valid color";
             display.printError(errorMessage);
@@ -85,18 +88,17 @@ public class PostLogin implements Context {
             }
             return this;
         }
-        //TODO: WSFACADE AND CHANGE CONTEXT TO PLAYGAME
-        return this;
     }
 
     private Context observeGame() {
         try {
             int number = validateGameNumber();
-        } catch (IllegalArgumentException e) {
+            GamePlay play = new GamePlay(server, display, null);
+            server.connect(number, play);
+            return play;
+        } catch (IllegalArgumentException | ServerErrorException e) {
             display.printError(e.getMessage());
-            //return this;
         }
-        //TODO: WS FACADE AND CHANGE CONTEXT TO PLAYGAME
         return this;
     }
 
