@@ -39,7 +39,7 @@ public class Server {
             wsConfig.onError(ctx -> {
                 if (ctx.error() != null) {
                     System.err.print(ctx.error().getMessage());
-                    ctx.error().printStackTrace();
+                    ctx.error().printStackTrace(System.err);
                 }
                 ctx.send(new ErrorMessage("There was a problem with the server. Please try again.").toString());
             });
