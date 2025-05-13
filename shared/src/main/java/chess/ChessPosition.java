@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -13,6 +14,29 @@ public class ChessPosition {
     final private int col;
 
     public ChessPosition(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
+
+    public ChessPosition(String input){
+        String allChars = input.strip();
+        allChars = allChars.replaceAll(" ", "");
+        allChars = allChars.toLowerCase(Locale.ROOT);
+        if (allChars.isEmpty() || allChars.isBlank()){
+            throw new IllegalArgumentException("No position supplied");
+        }
+        else if (allChars.length()>2){
+            throw new IllegalArgumentException("Too many values for position");
+        }
+        else if (allChars.length()< 2){
+            throw new IllegalArgumentException("Not enough values for position");
+        }
+        char column = allChars.charAt(0);
+        int col = column - 'a' + 1;
+        int row = Integer.parseInt(allChars.substring(1,2));
+        if (col < 1 || col > 8 || row < 1 || row > 8){
+            throw new IllegalArgumentException("Not a valid position");
+        }
         this.row = row;
         this.col = col;
     }
