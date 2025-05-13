@@ -41,10 +41,16 @@ public class GamePlay implements Context, WsMessageHandler {
     }
 
     private Context move() {
+        if (color == null){
+            return menu();
+        }
         return this;
     }
 
     private Context resign() {
+        if (color == null){
+            return menu();
+        }
         return this;
     }
 
@@ -53,6 +59,34 @@ public class GamePlay implements Context, WsMessageHandler {
     }
 
     private Context menu() {
+        String menu;
+        if (color == null){
+            menu = """
+                
+                ****OPTIONS****
+                Type "help" for options
+                Type "redraw" or "r" to redraw the board
+                Type "highlight" or "h" to see a piece's moves
+                Type "leave" or "l" to leave the game
+                Type "pieces" or "p" to toggle pieces or letters
+                
+                """;
+        }
+        else {
+            menu = """
+                
+                ****OPTIONS****
+                Type "help" for options
+                Type "redraw" or "r" to redraw the board
+                Type "move" or "m" to move a piece
+                Type "resign" to resign
+                Type "highlight" or "h" to see a piece's moves
+                Type "leave" or "l" to leave the game
+                Type "pieces" or "p" to toggle pieces or letters
+                
+                """;
+        }
+        display.printText(menu);
         return this;
     }
 
@@ -63,11 +97,12 @@ public class GamePlay implements Context, WsMessageHandler {
 
     @Override
     public void handleLoadGame(LoadGameMessage load) {
-
+        game = load.getGame();
+        //display.printBoard(board);
     }
 
     @Override
     public void handleNotification(NotificationMessage notification) {
-
+        display.printNotification(notification.getMessage());
     }
 }
