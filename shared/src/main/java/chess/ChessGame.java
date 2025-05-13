@@ -51,7 +51,7 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        if (startPosition == null){
+        if (startPosition == null) {
             return null;
         }
         Collection<ChessMove> validMoves = new HashSet<>();
@@ -84,7 +84,7 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        if (resigned){
+        if (resigned) {
             throw new InvalidMoveException("Cannot move after game has been resigned");
         }
         ChessPiece piece = board.getPiece(move.getStartPosition());
@@ -187,11 +187,11 @@ public class ChessGame {
         this.board = board;
     }
 
-    public boolean isResigned(){
+    public boolean isResigned() {
         return resigned;
     }
 
-    public void resign(){
+    public void resign() {
         resigned = true;
     }
 

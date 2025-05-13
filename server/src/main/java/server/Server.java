@@ -37,7 +37,7 @@ public class Server {
             wsConfig.onMessage(handler);
             wsConfig.onClose(handler);
             wsConfig.onError(ctx -> {
-                if (ctx.error() != null){
+                if (ctx.error() != null) {
                     System.err.print(ctx.error().getMessage());
                     ctx.error().printStackTrace();
                 }
@@ -68,7 +68,7 @@ public class Server {
             result.setMessage(e.getMessage());
             ctx.json(new Gson().toJson(result));
         });
-        javalin.exception(JsonSyntaxException.class, (e, ctx) ->{
+        javalin.exception(JsonSyntaxException.class, (e, ctx) -> {
             ctx.status(400);
             Result result = new Result();
             result.setMessage("Error: bad request");

@@ -22,8 +22,8 @@ import websocket.messages.ErrorMessage;
 import websocket.messages.LoadGameMessage;
 import websocket.messages.NotificationMessage;
 
-import static chess.ChessGame.TeamColor.WHITE;
 import static chess.ChessGame.TeamColor.BLACK;
+import static chess.ChessGame.TeamColor.WHITE;
 
 public class WebSocketHandler implements WsMessageHandler, WsCloseHandler {
     private final AuthDAO authDB;
@@ -48,7 +48,7 @@ public class WebSocketHandler implements WsMessageHandler, WsCloseHandler {
             return;
         }
         GameData lobby = gameDB.getGame(command.getGameID());
-        if (lobby == null){
+        if (lobby == null) {
             wsMessageContext.send(new ErrorMessage("Game does not exist").toString());
             return;
         }
@@ -66,13 +66,11 @@ public class WebSocketHandler implements WsMessageHandler, WsCloseHandler {
         context.enableAutomaticPings();
         String user = auth.username();
         String message = user + " has entered as ";
-        if (user.equals(lobby.whiteUsername())){
+        if (user.equals(lobby.whiteUsername())) {
             message = message + "the white player!";
-        }
-        else if(user.equals(lobby.blackUsername())){
+        } else if (user.equals(lobby.blackUsername())) {
             message = message + "the black player!";
-        }
-        else {
+        } else {
             message = message + "an observer!";
         }
         context.send(new LoadGameMessage(lobby.game()).toString());
@@ -81,15 +79,15 @@ public class WebSocketHandler implements WsMessageHandler, WsCloseHandler {
     }
 
     private void leave(LeaveCommand command, WsMessageContext context, GameData lobby, AuthData auth)
-            throws DataAccessException{
-        if (auth.username().equals(lobby.blackUsername())){
+            throws DataAccessException {
+        if (auth.username().equals(lobby.blackUsername())) {
             gameDB.updateGame(new GameData(lobby.gameID(),
                     lobby.gameName(),
                     lobby.whiteUsername(),
                     null,
                     lobby.game()));
         }
-        if (auth.username().equals(lobby.whiteUsername())){
+        if (auth.username().equals(lobby.whiteUsername())) {
             gameDB.updateGame(new GameData(lobby.gameID(),
                     lobby.gameName(),
                     null,
@@ -102,22 +100,21 @@ public class WebSocketHandler implements WsMessageHandler, WsCloseHandler {
     }
 
     private void resign(ResignCommand command, WsMessageContext context, GameData lobby, AuthData auth)
-            throws DataAccessException{
-        if (isObserver(lobby, auth.username())){
+            throws DataAccessException {
+        if (isObserver(lobby, auth.username())) {
             context.send(new ErrorMessage("Observers cannot resign").toString());
             return;
         }
-        if (lobby.game().isResigned() || lobby.game().isInCheckmate(BLACK) || lobby.game().isInCheckmate(WHITE)){
+        if (lobby.game().isResigned() || lobby.game().isInCheckmate(BLACK) || lobby.game().isInCheckmate(WHITE)) {
             context.send(new ErrorMessage("Cannot resign after game over").toString());
             return;
         }
         lobby.game().resign();
         gameDB.updateGame(lobby);
         String notification = auth.username() + " has resigned! ";
-        if (auth.username().equals(lobby.whiteUsername())){
+        if (auth.username().equals(lobby.whiteUsername())) {
             notification = notification + getUsernameOfColor(BLACK, lobby);
-        }
-        else {
+        } else {
             notification = notification + getUsernameOfColor(WHITE, lobby);
         }
         notification = notification + " wins!";
@@ -125,12 +122,12 @@ public class WebSocketHandler implements WsMessageHandler, WsCloseHandler {
     }
 
     private void move(MakeMoveCommand command, WsMessageContext context, GameData lobby, AuthData auth)
-            throws DataAccessException{
+            throws DataAccessException {
         ChessGame game = lobby.game();
         ChessGame.TeamColor turn = game.getTeamTurn();
         if (turn == WHITE && !auth.username().equals(lobby.whiteUsername()) ||
-                turn == BLACK && !auth.username().equals(lobby.blackUsername())){
-            if (isObserver(lobby, auth.username())){
+                turn == BLACK && !auth.username().equals(lobby.blackUsername())) {
+            if (isObserver(lobby, auth.username())) {
                 context.send(new ErrorMessage("Observers cannot move pieces").toString());
                 return;
             }
@@ -138,7 +135,7 @@ public class WebSocketHandler implements WsMessageHandler, WsCloseHandler {
             context.send(new ErrorMessage("Cannot make move out of turn").toString());
             return;
         }
-        try{
+        try {
             game.makeMove(command.getMove());
             gameDB.updateGame(new GameData(lobby.gameID(),
                     lobby.gameName(),
@@ -149,17 +146,15 @@ public class WebSocketHandler implements WsMessageHandler, WsCloseHandler {
             String notification = auth.username() + " moved " + command.getMove().toString();
             connectionManager.broadcastWithExclusion(new NotificationMessage(notification).toString(),
                     lobby.gameID(), context);
-            if (game.isInCheck(game.getTeamTurn())){
-                if (game.isInCheckmate(game.getTeamTurn())){
+            if (game.isInCheck(game.getTeamTurn())) {
+                if (game.isInCheckmate(game.getTeamTurn())) {
                     notification = "Checkmate! " + getUsernameOfColor(game.getTeamTurn(), lobby) + " loses, " +
                             getUsernameOfColor(game.getEnemyColor(game.getTeamTurn()), lobby) + " wins!";
-                }
-                else{
+                } else {
                     notification = getUsernameOfColor(game.getTeamTurn(), lobby) + " is in Check!";
                 }
                 connectionManager.broadcast(new NotificationMessage(notification).toString(), lobby.gameID());
-            }
-            else if (game.isInStalemate(game.getTeamTurn())){
+            } else if (game.isInStalemate(game.getTeamTurn())) {
                 notification = "Stalemate! No one wins!";
                 connectionManager.broadcast(notification, lobby.gameID());
             }
@@ -168,15 +163,15 @@ public class WebSocketHandler implements WsMessageHandler, WsCloseHandler {
         }
     }
 
-    private String getUsernameOfColor(ChessGame.TeamColor color, GameData data){
-        return switch (color){
+    private String getUsernameOfColor(ChessGame.TeamColor color, GameData data) {
+        return switch (color) {
             case BLACK -> data.blackUsername();
             case WHITE -> data.whiteUsername();
         };
     }
 
-    private boolean isObserver(GameData lobby, String username){
-        if (!username.equals(lobby.blackUsername()) && !username.equals(lobby.whiteUsername())){
+    private boolean isObserver(GameData lobby, String username) {
+        if (!username.equals(lobby.blackUsername()) && !username.equals(lobby.whiteUsername())) {
             return true;
         }
         return false;

@@ -27,7 +27,7 @@ public class WSConnectionManager {
     }
 
     public void removeConnection(WsContext context) {
-        for (Set<WsContext> sessions:  sessionMap.values()){
+        for (Set<WsContext> sessions : sessionMap.values()) {
             sessions.remove(context);
         }
     }

@@ -52,11 +52,11 @@ public class ChessPosition {
 
     @Override
     public String toString() {
-        return  getColumnAsLetter() + row;
+        return getColumnAsLetter() + row;
     }
 
-    public String getColumnAsLetter(){
-        return switch (col){
+    public String getColumnAsLetter() {
+        return switch (col) {
             case 1 -> "a";
             case 2 -> "b";
             case 3 -> "c";
