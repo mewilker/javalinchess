@@ -12,6 +12,8 @@ import io.javalin.http.UnauthorizedResponse;
 import response.Result;
 import websocket.messages.ErrorMessage;
 
+import java.nio.channels.ClosedChannelException;
+
 
 public class Server {
     private final Javalin javalin = Javalin.create(config -> config.staticFiles.add("/web"));
@@ -38,10 +40,12 @@ public class Server {
             wsConfig.onClose(handler);
             wsConfig.onError(ctx -> {
                 if (ctx.error() != null) {
-                    System.err.print(ctx.error().getMessage());
-                    ctx.error().printStackTrace(System.err);
+                    if (ctx.error().getClass() != ClosedChannelException.class){
+                        System.err.print(ctx.error().getMessage());
+                        ctx.error().printStackTrace(System.err);
+                        ctx.send(new ErrorMessage("There was a problem with the server. Please try again.").toString());
+                    }
                 }
-                ctx.send(new ErrorMessage("There was a problem with the server. Please try again.").toString());
             });
         });
         // Register your endpoints and handle exceptions here.
