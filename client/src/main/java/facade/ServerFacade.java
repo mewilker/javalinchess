@@ -1,6 +1,7 @@
 package facade;
 
 import chess.ChessGame;
+import chess.ChessMove;
 import datamodels.GameData;
 import requests.CreateGameRequest;
 import requests.JoinGameRequest;
@@ -10,16 +11,15 @@ import response.CreateGameResult;
 import response.ListGamesResult;
 import response.LoginResult;
 import response.Result;
-import websocket.commands.ConnectCommand;
-import websocket.commands.UserGameCommand;
+import websocket.commands.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ServerFacade {
     private final String url;
     private final HttpCommunicator http = new HttpCommunicator();
     private WSCommunicator ws;
-    private int joinedID;
 
     private String authToken = "";
 
@@ -130,7 +130,34 @@ public class ServerFacade {
         }
         catch (Exception e){
             logToError(e);
+            ws = null;
             throw new ServerErrorException("Could not connect to game", e);
+        }
+    }
+
+    public void leave(int gameID) throws ServerErrorException {
+        sendCommand(new LeaveCommand(authToken, gameID));
+    }
+
+    public void resign(int gameID) throws ServerErrorException {
+        sendCommand(new ResignCommand(authToken, gameID));
+    }
+
+    public void makeMove(int gameID, ChessMove move) throws ServerErrorException {
+        sendCommand(new MakeMoveCommand(authToken, gameID, move));
+    }
+
+    private void sendCommand(UserGameCommand command)throws ServerErrorException{
+        if (ws == null){
+            throw new ServerErrorException("Could not connect to game");
+        }
+        try{
+            ws.send(command.toString());
+        } catch (IOException e) {
+            throw new ServerErrorException("Could not connect to game", e);
+        }
+        finally {
+            ws = null;
         }
     }
 }
