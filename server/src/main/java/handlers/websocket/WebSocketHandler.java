@@ -11,6 +11,8 @@ import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import datamodels.AuthData;
 import datamodels.GameData;
+import io.javalin.websocket.WsCloseContext;
+import io.javalin.websocket.WsCloseHandler;
 import io.javalin.websocket.WsMessageContext;
 import io.javalin.websocket.WsMessageHandler;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +25,7 @@ import websocket.messages.NotificationMessage;
 import static chess.ChessGame.TeamColor.WHITE;
 import static chess.ChessGame.TeamColor.BLACK;
 
-public class WebSocketHandler implements WsMessageHandler {
+public class WebSocketHandler implements WsMessageHandler, WsCloseHandler {
     private final AuthDAO authDB;
     private final GameDAO gameDB;
     private final WSConnectionManager connectionManager = new WSConnectionManager();
@@ -61,6 +63,7 @@ public class WebSocketHandler implements WsMessageHandler {
     private void connect(ConnectCommand command, WsMessageContext context, GameData lobby, AuthData auth)
             throws DataAccessException {
         connectionManager.addConnection(lobby.gameID(), context);
+        context.enableAutomaticPings();
         String user = auth.username();
         String message = user + " has entered as ";
         if (user.equals(lobby.whiteUsername())){
@@ -151,5 +154,10 @@ public class WebSocketHandler implements WsMessageHandler {
             case BLACK -> data.blackUsername();
             case WHITE -> data.whiteUsername();
         };
+    }
+
+    @Override
+    public void handleClose(@NotNull WsCloseContext wsCloseContext) throws Exception {
+        connectionManager.removeConnection(wsCloseContext);
     }
 }

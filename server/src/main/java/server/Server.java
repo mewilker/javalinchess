@@ -31,8 +31,10 @@ public class Server {
 
     public int run(int desiredPort) {
         javalin.start(desiredPort);
+        WebSocketHandler handler = new WebSocketHandler(authDB, gameDB);
         javalin.ws("/ws", wsConfig -> {
-            wsConfig.onMessage(new WebSocketHandler(authDB, gameDB));
+            wsConfig.onMessage(handler);
+            wsConfig.onClose(handler);
         });
         // Register your endpoints and handle exceptions here.
         javalin.delete("/db", new ClearHandler(userDB, authDB, gameDB));
