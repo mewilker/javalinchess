@@ -155,7 +155,7 @@ public class ServerFacade {
         }
         try{
             ws.send(command.toString());
-        } catch (IOException e) {
+        } catch (IOException | IllegalStateException e) {
             logToError(e);
             ws = null;
             throw new ServerErrorException("Could not connect to game", e);
