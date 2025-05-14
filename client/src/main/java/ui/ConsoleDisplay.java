@@ -46,7 +46,7 @@ public class ConsoleDisplay implements Display {
         out.print(RESET_TEXT_BOLD_FAINT);
         String result = getInput();
         out.print(SET_TEXT_COLOR_BLUE);
-        return result;
+        return result.strip();
     }
 
     //Seems a bit funny, but I want display to keep track of the print stream, not the context.
