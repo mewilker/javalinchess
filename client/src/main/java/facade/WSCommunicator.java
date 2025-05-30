@@ -8,7 +8,7 @@ import websocket.messages.LoadGameMessage;
 import websocket.messages.NotificationMessage;
 import websocket.messages.ServerMessage;
 
-import javax.websocket.*;
+import jakarta.websocket.*;
 import java.io.IOException;
 import java.net.URI;
 
