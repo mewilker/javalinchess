@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class SQLGameDAO implements GameDAO {
-    private final Gson GSON = new GsonBuilder()
+    private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(ChessPiece.class, TypeAdapters.pieceDeserializer())
             .create();
 

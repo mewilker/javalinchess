@@ -15,7 +15,7 @@ import java.net.http.HttpResponse;
 
 public class HttpCommunicator {
     private final HttpClient http = HttpClient.newHttpClient();
-    private final Gson GSON = new GsonBuilder()
+    private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Result.class, TypeAdapters.resultDeserializer())
             .registerTypeAdapter(ChessPiece.class, TypeAdapters.pieceDeserializer())
             .create();
