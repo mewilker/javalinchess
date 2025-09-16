@@ -13,39 +13,21 @@ public class Knight extends ChessPiece {
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         HashSet<ChessMove> moves = new HashSet<>();
-        ChessPosition inspect = new ChessPosition(myPosition.getRow() + 2, myPosition.getColumn() + 1);
-        if (canTake(board, inspect)) {
-            moves.add(new ChessMove(myPosition, inspect, null));
+        HashSet<ChessPosition> positions = new HashSet<>();
+        //add all vectors for knight
+        positions.add(new ChessPosition(myPosition.getRow() + 2, myPosition.getColumn() + 1));
+        positions.add(new ChessPosition(myPosition.getRow() + 2, myPosition.getColumn() - 1));
+        positions.add(new ChessPosition(myPosition.getRow() - 2, myPosition.getColumn() + 1));
+        positions.add(new ChessPosition(myPosition.getRow() - 2, myPosition.getColumn() - 1));
+        positions.add(new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 2));
+        positions.add(new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 2));
+        positions.add(new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 2));
+        positions.add(new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 2));
+        for (ChessPosition inspect : positions){
+            if (canTake(board, inspect)) {
+                moves.add(new ChessMove(myPosition, inspect, null));
+            }
         }
-        inspect = new ChessPosition(myPosition.getRow() + 2, myPosition.getColumn() - 1);
-        if (canTake(board, inspect)) {
-            moves.add(new ChessMove(myPosition, inspect, null));
-        }
-        inspect = new ChessPosition(myPosition.getRow() - 2, myPosition.getColumn() + 1);
-        if (canTake(board, inspect)) {
-            moves.add(new ChessMove(myPosition, inspect, null));
-        }
-        inspect = new ChessPosition(myPosition.getRow() - 2, myPosition.getColumn() - 1);
-        if (canTake(board, inspect)) {
-            moves.add(new ChessMove(myPosition, inspect, null));
-        }
-        inspect = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 2);
-        if (canTake(board, inspect)) {
-            moves.add(new ChessMove(myPosition, inspect, null));
-        }
-        inspect = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 2);
-        if (canTake(board, inspect)) {
-            moves.add(new ChessMove(myPosition, inspect, null));
-        }
-        inspect = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() + 2);
-        if (canTake(board, inspect)) {
-            moves.add(new ChessMove(myPosition, inspect, null));
-        }
-        inspect = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn() - 2);
-        if (canTake(board, inspect)) {
-            moves.add(new ChessMove(myPosition, inspect, null));
-        }
-        //TODO: there has got to be a prettier way to populate this
         return moves;
     }
 
