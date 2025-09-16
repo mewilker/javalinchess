@@ -13,10 +13,12 @@ import static ui.EscapeSequences.*;
 public class ConsoleDisplay implements Display {
     private final PrintStream out;
     private final Scanner in;
+    private final ConsoleBoardPrinter boardPrinter;
 
     public ConsoleDisplay(PrintStream out, Scanner in) {
         this.out = out;
         this.in = in;
+        boardPrinter = new ConsoleBoardPrinter(out);
     }
 
     public void title() {
@@ -123,7 +125,7 @@ public class ConsoleDisplay implements Display {
             return;
         }
         out.println();
-        new ConsoleBoardPrinter(out).printGame(color, game);
+        boardPrinter.printGame(color, game);
         out.println();
     }
 
@@ -134,7 +136,12 @@ public class ConsoleDisplay implements Display {
             return;
         }
         out.println();
-        new ConsoleBoardPrinter(out).printGame(color, game, highlighted);
+        boardPrinter.printGame(color, game, highlighted);
         out.println();
+    }
+
+    @Override
+    public void changeDisplayOptions() {
+        boardPrinter.toggleLetters();
     }
 }

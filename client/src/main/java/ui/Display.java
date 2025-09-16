@@ -22,4 +22,6 @@ public interface Display {
     void printGame(ChessGame.TeamColor color, ChessGame game);
 
     void printGame(ChessGame.TeamColor color, ChessGame game, ChessPosition highlighted);
+
+    void changeDisplayOptions();
 }
