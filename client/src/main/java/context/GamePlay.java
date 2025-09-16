@@ -47,7 +47,6 @@ public class GamePlay implements Context, WsMessageHandler {
     }
 
     private Context highlight() {
-        //TODO: testme
         ChessPosition highlight = new ChessPosition(display.stringField("Where to highlight? (format: a1)"));
         display.printGame(color, game, highlight);
         return this;
