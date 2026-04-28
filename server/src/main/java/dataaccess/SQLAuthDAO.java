@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class SQLAuthDAO implements AuthDAO {
     public SQLAuthDAO() throws DataAccessException {
         String statement = """ 
-                CREATE TABLE IF NOT EXISTS auths (
+                CREATE TABLE IF NOT EXISTS Auths (
                     username VARCHAR (255) NOT NULL,
                     token VARCHAR (255) NOT NULL,
                     PRIMARY KEY (token)
