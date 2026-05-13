@@ -1,16 +1,13 @@
 package service;
 
-import com.mysql.cj.log.Log;
+import chess.ChessGame;
 import dataaccess.*;
-import datamodels.GameData;
 import org.junit.jupiter.api.*;
 import org.mindrot.jbcrypt.BCrypt;
 import response.*;
 import requests.*;
 import services.*;
 import datamodels.*;
-
-import java.util.Collection;
 
 public class ServiceTest {
 
@@ -19,7 +16,7 @@ public class ServiceTest {
     private static GameDAO gamedao;
 
     private String token;
-    private GameData game;
+    private int gameid;
 
     @BeforeAll
     public static void dbInit() throws DataAccessException{
@@ -40,7 +37,7 @@ public class ServiceTest {
         userdao.insertUser(new UserData("C3PO", BCrypt.hashpw("droid", BCrypt.gensalt()),"Threepio@jeditemple.com"));
         gamedao.insertGame("gamegame");
         gamedao.insertGame("game");
-        gamedao.insertGame("Sabaac");
+        gameid = gamedao.insertGame("Sabaac");
 
     }
 
@@ -73,5 +70,38 @@ public class ServiceTest {
         Assertions.assertNotNull(result.getAuthToken());
         Assertions.assertEquals("C3PO", result.getUsername());
         Assertions.assertEquals(authdao.getAuth(result.getAuthToken()).username(), result.getUsername());
+    }
+
+    @Test
+    @DisplayName ("Logout")
+    public void logout() throws DataAccessException{
+        LogoutService service = new LogoutService(authdao);
+        Result result = service.logout(new LogoutRequest(token));
+        Assertions.assertNull(result.getMessage());
+    }
+
+    @Test
+    @DisplayName("List Games")
+    public void listGames() throws DataAccessException{
+        ListGamesService service = new ListGamesService(gamedao);
+        ListGamesResult result = (ListGamesResult) service.list();
+        Assertions.assertEquals(gamedao.getAllGames(), result.getGames());
+    }
+
+    @Test
+    @DisplayName("Create Game")
+    public void makeGame() throws DataAccessException{
+        CreateGameService service = new CreateGameService(gamedao);
+        CreateGameResult result = (CreateGameResult) service.createGame(new CreateGameRequest("Dejarik", token));
+        Assertions.assertNotNull(gamedao.getGame(result.getGameID()));
+    }
+
+    @Test
+    @DisplayName("Join Game")
+    public void join() throws DataAccessException{
+        JoinGameService service = new JoinGameService(authdao, gamedao);
+        Result result = service.joinGame(new JoinGameRequest(ChessGame.TeamColor.BLACK, gameid, token));
+        Assertions.assertNull(result.getMessage());
+        Assertions.assertEquals("username", gamedao.getGame(gameid).blackUsername());
     }
 }
