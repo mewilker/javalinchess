@@ -7,7 +7,7 @@ import dataaccess.UserDAO;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
-import services.ClearService;
+import service.ClearService;
 
 public class ClearHandler implements Handler {
     private final ClearService service;

@@ -8,7 +8,7 @@ import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
 import requests.LogoutRequest;
 import response.Result;
-import services.LogoutService;
+import service.LogoutService;
 
 public class LogoutHandler implements Handler {
     private final LogoutService service;

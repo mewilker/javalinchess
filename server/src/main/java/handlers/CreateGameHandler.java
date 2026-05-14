@@ -8,7 +8,7 @@ import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
 import requests.CreateGameRequest;
 import response.Result;
-import services.CreateGameService;
+import service.CreateGameService;
 
 public class CreateGameHandler implements Handler {
     private final CreateGameService service;

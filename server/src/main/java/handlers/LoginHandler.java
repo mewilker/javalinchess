@@ -9,7 +9,7 @@ import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
 import requests.LoginRequest;
 import response.Result;
-import services.LoginService;
+import service.LoginService;
 
 public class LoginHandler implements Handler {
     private final LoginService service;

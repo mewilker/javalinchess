@@ -9,7 +9,7 @@ import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
 import requests.RegisterRequest;
 import response.Result;
-import services.RegisterService;
+import service.RegisterService;
 
 public class RegisterHandler implements Handler {
     private final RegisterService service;

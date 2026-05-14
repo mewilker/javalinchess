@@ -9,7 +9,7 @@ import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
 import requests.JoinGameRequest;
 import response.Result;
-import services.JoinGameService;
+import service.JoinGameService;
 
 public class JoinGameHandler implements Handler {
 

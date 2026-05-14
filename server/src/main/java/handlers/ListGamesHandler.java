@@ -7,7 +7,7 @@ import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
 import response.Result;
-import services.ListGamesService;
+import service.ListGamesService;
 
 public class ListGamesHandler implements Handler {
     private final ListGamesService service;
