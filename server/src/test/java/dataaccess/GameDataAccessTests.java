@@ -1,6 +1,7 @@
 package dataaccess;
 
 import chess.ChessGame;
+import dataaccess.sql.SQLGameDAO;
 import datamodels.GameData;
 import org.junit.jupiter.api.*;
 

@@ -1,9 +1,12 @@
-package dataaccess;
+package dataaccess.sql;
 
 import chess.ChessGame;
 import chess.ChessPiece;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dataaccess.DataAccessException;
+import dataaccess.DatabaseManager;
+import dataaccess.GameDAO;
 import datamodels.GameData;
 import serialization.TypeAdapters;
 
