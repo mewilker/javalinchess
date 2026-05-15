@@ -34,10 +34,22 @@ public class AuthDataAccessTests {
     }
 
     @Test
+    public void failInsert() {
+        Assertions.assertThrows(DataAccessException.class,
+                ()->adao.insertAuth(null));
+    }
+
+    @Test
     @DisplayName("Positive Get")
     public void get() throws DataAccessException{
         AuthData data = adao.getAuth(token.authToken());
         Assertions.assertEquals(token, data);
+    }
+
+    @Test
+    public void failGet() throws DataAccessException{
+        var got = adao.getAuth("abc");
+        Assertions.assertNull(got);
     }
 
     @Test
@@ -47,6 +59,12 @@ public class AuthDataAccessTests {
         Assertions.assertNotNull(adao.getAuth(deleteMe.authToken()));
         adao.deleteAuth(deleteMe.authToken());
         Assertions.assertNull(adao.getAuth(deleteMe.authToken()));
+        Assertions.assertNotNull(adao.getAuth(token.authToken()));
+    }
+
+    @Test
+    public void deleteNone() throws DataAccessException{
+        adao.deleteAuth("abc");
         Assertions.assertNotNull(adao.getAuth(token.authToken()));
     }
 }
