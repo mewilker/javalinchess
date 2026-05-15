@@ -1,5 +1,6 @@
 package dataaccess;
 
+import dataaccess.sql.SQLAuthDAO;
 import datamodels.AuthData;
 import org.junit.jupiter.api.*;
 
