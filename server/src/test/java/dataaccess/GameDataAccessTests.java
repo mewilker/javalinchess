@@ -4,6 +4,7 @@ import chess.ChessGame;
 import datamodels.GameData;
 import org.junit.jupiter.api.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class GameDataAccessTests {
@@ -52,6 +53,13 @@ public class GameDataAccessTests {
     }
 
     @Test
+    public void getAllEmpty() throws DataAccessException{
+        gdao.clear();
+        Assertions.assertEquals(new ArrayList<GameData>(),gdao.getAllGames());
+    }
+
+
+    @Test
     @DisplayName("Positive Insert")
     public void insert() throws DataAccessException{
         int gameID = gdao.insertGame("Dejarik");
@@ -60,9 +68,21 @@ public class GameDataAccessTests {
     }
 
     @Test
+    @DisplayName("Negative Insert")
+    public void badInsert() {
+        Assertions.assertThrows(DataAccessException.class, ()-> gdao.insertGame(null));
+    }
+
+    @Test
     public void getOne() throws DataAccessException{
         GameData got = gdao.getGame(game.gameID());
         Assertions.assertEquals(game, got);
+    }
+
+    @Test
+    public void failGetOne() throws DataAccessException{
+        GameData got = gdao.getGame(-1);
+        Assertions.assertNull(got);
     }
 
     @Test
@@ -78,5 +98,19 @@ public class GameDataAccessTests {
         var got = gdao.getGame(game.gameID());
         Assertions.assertEquals(updated, got);
         Assertions.assertNotEquals(game, got);
+    }
+
+    @Test
+    public void badUpdate() throws DataAccessException {
+        GameData invalid = new GameData(
+                game.gameID(),
+                null,
+                null,
+                null,
+                null
+        );
+        gdao.updateGame(invalid);
+        GameData got = gdao.getGame(game.gameID());
+        Assertions.assertNotNull(got.gameName());
     }
 }
