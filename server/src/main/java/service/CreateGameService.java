@@ -14,6 +14,11 @@ public class CreateGameService {
     }
 
     public Result createGame(CreateGameRequest request) throws DataAccessException {
+        if (request.getGameName().isEmpty()){
+            Result result = new Result();
+            result.setMessage("Error: bad request");
+            return result;
+        }
         int gameID = gameDB.insertGame(request.getGameName());
         return new CreateGameResult(gameID);
     }

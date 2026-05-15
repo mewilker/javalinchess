@@ -29,6 +29,9 @@ public class CreateGameHandler implements Handler {
             return;
         }
         result = service.createGame(request);
+        if (result.getMessage() != null){
+            context.status(400);
+        }
         context.status(200);
         context.json(new Gson().toJson(result));
     }
