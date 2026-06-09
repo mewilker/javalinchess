@@ -87,14 +87,14 @@ public class Server {
             Result result = new Result();
             result.setMessage("There was an error with the server. Please try again later.");
             ctx.json(new Gson().toJson(result));
-        });
+        });*/
 
         javalin.exception(UnauthorizedResponse.class, (e, ctx) -> {
             ctx.status(401);
             Result result = new Result();
             result.setMessage(e.getMessage());
             ctx.json(new Gson().toJson(result));
-        });
+        });/*
         javalin.exception(JsonSyntaxException.class, (e, ctx) -> {
             ctx.status(400);
             Result result = new Result();
