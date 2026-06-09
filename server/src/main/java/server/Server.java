@@ -61,7 +61,27 @@ public class Server {
         javalin.post("/game", new CreateGameHandler(gameDB));
         javalin.put("/game", new JoinGameHandler(gameDB, authDB));
 
-        javalin.exception(DataAccessException.class, (e, ctx) -> {
+        javalin.exception(Exception.class, (e, ctx) -> {
+            Result result = new Result();
+            switch (e){
+                case UnauthorizedResponse _ -> {
+                    ctx.status(401);
+                    result.setMessage(e.getMessage());
+                }
+                case JsonSyntaxException _ -> {
+                    ctx.status(400);
+                    result.setMessage("Error: bad request");
+                }
+                default -> {
+                    e.printStackTrace(System.err);
+                    ctx.status(500);
+                    result.setMessage("There was an error with the server. Please try again later.");
+                }
+            }
+            ctx.json(new Gson().toJson(result));
+        });
+
+        /*javalin.exception(DataAccessException.class, (e, ctx) -> {
             e.printStackTrace(System.err);
             ctx.status(500);
             Result result = new Result();
@@ -80,7 +100,7 @@ public class Server {
             Result result = new Result();
             result.setMessage("Error: bad request");
             ctx.json(new Gson().toJson(result));
-        });
+        });*/
 
         return javalin.port();
     }
